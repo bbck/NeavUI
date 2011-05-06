@@ -1,13 +1,13 @@
 
 nTooltip = {
     position = {
-        'BOTTOMRIGHT', UIParent, 'BOTTOMRIGHT', -27.35, 27.35
+        'BOTTOMRIGHT', UIParent, 'BOTTOMRIGHT', -27.35, 197.35
     },
     
     disableFade = false, -- can cause errors or a buggy tooltip!
     
     reactionBorderColor = false, -- WOHA! Try this out!
-    itemqualityBorderColor = true,
+    itemqualityBorderColor = false,
     
     showPlayerTitles = false,
     showPVPIcons = false, -- show pvp icons instead of just a prefix
