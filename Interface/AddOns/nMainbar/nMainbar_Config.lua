@@ -72,19 +72,19 @@ nMainbar = {
     
     stanceBar = {
         mouseover           = false,
-        hide                = false,
+        hide                = true,
         scale               = 1,
         alpha               = 1,
     },
     
     multiBarLeft = {
-        mouseover           = false,
+        mouseover           = true,
         alpha               = 1,
         orderHorizontal     = false,
     },
     
     multiBarRight = {
-        mouseover           = false,
+        mouseover           = true,
         alpha               = 1,
         orderHorizontal     = false,
     },
