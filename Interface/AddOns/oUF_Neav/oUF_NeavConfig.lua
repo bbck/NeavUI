@@ -24,7 +24,7 @@ oUF_Neav = {
         player = {
             mouseoverText = false,
             
-            scale = 1.193,
+            scale = 1.0,
             style = 'NORMAL', -- 'NORMAL', 'RARE' or 'ELITE'
             
             showHealthPercent = false,
@@ -32,17 +32,17 @@ oUF_Neav = {
             druidManaFrequentUpdates = false,
             
             showStatusFlash = true,
-            showCombatFeedback = true,
+            showCombatFeedback = false,
             
-            position = {'TOPLEFT', UIParent, 34, -30},
+            position = {'BOTTOMLEFT', UIParent, 600, 300},
         },
 
         pet = {
             mouseoverText = true,
             
-            scale = 1.193,
+            scale = 1.0,
             
-            auraSize = 22,
+            auraSize = 18,
             
             showHealthPercent = false,
             showPowerPercent = false,
@@ -53,13 +53,13 @@ oUF_Neav = {
         target = {
             mouseoverText = false,
             
-            scale = 1.193,
+            scale = 1.0,
             
-            auraSize = 22,
-            numBuffs = 20,
-            numDebuffs = 20,
+            auraSize = 18,
+            numBuffs = 4,
+            numDebuffs = 4,
             
-            showComboPoints = true,
+            showComboPoints = false,
             showComboPointsAsNumber = false,
             numComboPointsColor = {0.9, 0, 0},      -- textcolor of the combopoints if showComboPointsAsNumber is true
             
@@ -67,63 +67,63 @@ oUF_Neav = {
             showHealthAndPercent = true,   -- overrides showHealthPercent
             showPowerPercent = false,
             
-            showCombatFeedback = true,
+            showCombatFeedback = false,
             
 			colorPlayerDebuffsOnly = true,
             
-            position = {'TOPLEFT', UIParent, 270, -30},
+            position = {'BOTTOMRIGHT', UIParent, -600, 300},
         },
 
         targettarget = {
-            scale = 1.193,
+            scale = 1.0,
         },
 
         focus = {
             mouseoverText = false,
             
-            scale = 1.193,
+            scale = 1.0,
             
-            auraSize = 22,
+            auraSize = 18,
             numDebuffs = 6,
             
             showHealthPercent = false,
             showHealthAndPercent = false,   -- overrides showHealthPercent
             showPowerPercent = false,
             
-            showCombatFeedback = true,
+            showCombatFeedback = false,
                         
-            enableFocusToggleKeybind = true,
+            enableFocusToggleKeybind = false,
             focusToggleKey = 'type4', -- type1, type2 (mousebutton 1 or 2, 3, 4, 5 etc. works too)
         },
         
         focustarget = {
-            scale = 1.193,
+            scale = 1.0,
         },
         
         party = {
             show = true,
             mouseoverText = true,
             
-            scale = 1.11,
-            auraSize = 22,  
+            scale = 1.0,
+            auraSize = 18,  
             
-            hideInRaid = false,
+            hideInRaid = true,
             
             position = {'TOPLEFT', UIParent, 25, -200},
         },
 
         raid = {
             show = true,    
-            showSolo = true,
+            showSolo = false,
         
             width = 42,
             height = 40,
-            scale = 1.1, 
+            scale = 1.0, 
             iconSize = 20,
             
             numGroups = 8,
 
-            position = {'LEFT', UIParent, 'CENTER', 350, -30},
+            position = {'LEFT', UIParent, 'CENTER', 400, -130},
             
             showThreatText = false,
             showRolePrefix = false,
@@ -137,7 +137,7 @@ oUF_Neav = {
             horizontalHealthBars = false,
             
             manabar = {
-                show = true,
+                show = false,
                 horizontalOrientation = false,
             },
 
@@ -156,7 +156,7 @@ oUF_Neav = {
             
             scale = 1.0,
             
-            auraSize = 22,
+            auraSize = 18,
             
             position = {'TOPRIGHT', UIParent, 'TOPRIGHT', -80, -300},
         },
