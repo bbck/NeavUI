@@ -5,7 +5,7 @@ nMainbar = {
     },
     
     button = { 
-        showKeybinds            = false,
+        showKeybinds            = true,
         showMacronames          = false, 
         OutOfRangeColoring      = 'icon',   -- 'icon'
                                             -- 'hotkey' (will show the range indicator instead of the hotkey if ['Keybind = false'] )
