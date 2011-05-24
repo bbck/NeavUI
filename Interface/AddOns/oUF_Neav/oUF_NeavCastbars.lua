@@ -49,7 +49,7 @@ function oUF_Neav.CreateCastbars(self, unit)
     if (unit == 'player' or unit == 'target' or unit == 'focus' or unit == 'pet' and config.show) then 
         self.Castbar = CreateFrame('StatusBar', self:GetName()..'Castbar', self)
         self.Castbar:SetStatusBarTexture(oUF_Neav.media.statusbar)
-        self.Castbar:SetScale(0.93)
+        self.Castbar:SetScale(1.132)
         self.Castbar:SetSize(config.width, config.height)
         self.Castbar:SetStatusBarColor(unpack(config.color))
         
