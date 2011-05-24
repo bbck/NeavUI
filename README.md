@@ -27,25 +27,17 @@
 - Added a copy chat function to nChat, use it by right-clicking on the chat tab. Also added a URL copy function.
 - nRunes has been removed and replaced by nPower, which is essentially the same thing except with support for energy, focus and rage as well. The energy module also shows combo points in a similar fashion as nRunes showed runes.
 - nTooltip: the target of the mouseover unit has now a raidtarget support.
-- nTooltip has now a reaction coloring for the border and healthbar and itemquality border support!
-- Skin module for external addons like omen, recount etc is now online, with some example code snippets.
+- nTooltip has now some cool color options!
+- Skin module for external addons like omen, recount etc is now online, with some example codes.
 
 ## Known issues
 
 - Sometimes, the quest area overlay on the world map gets blocked from showing if you open the map while in combat.
 - !Colorz cause an ui-block-error (not lua error!), because we change the value of a global table, ignore this or delete `PowerBarColor['MANA'] = {r = 0/255, g = 0.55, b = 1}` in the `!Colorz.lua` file.
 
-## Next Steps until a Update (May 14)
-
-- oUF_Neav: create working party pets
-- oUF_Neav: get rid of the flash issue
-
 ## Plans For The Future 
 
-- Continue work on nPlates
-- nMainbar: Create the possibility for a moveable/mouseover micromenu&bagslots
 - nCore module for open all mails (and ignore mails with COD).
-- Make nPower compact, add config file and put it on WoWI.
 
 ## Bugs?
 

@@ -3,6 +3,7 @@ oUF_Neav = {
     show = {
         castbars = true,
         pvpicons = true,
+        classPortraits = false,
     },
 
     media = {
@@ -19,18 +20,22 @@ oUF_Neav = {
         fontBig = 14,
         fontBigOutline = false,
     },
-
+    
     units = {
         player = {
             mouseoverText = false,
             
             scale = 1.0,
-            style = 'NORMAL', -- 'NORMAL', 'RARE' or 'ELITE'
+            style = 'NORMAL', -- 'NORMAL', 'RARE', 'ELITE' or 'CUSTOM'
+            customTexture = 'Interface\\AddOns\\oUF_Neav\\media\\customFrameTexture',
             
             showHealthPercent = false,
             showPowerPercent = false,
+            
             druidManaFrequentUpdates = false,
             
+            showVengeance = false, -- attention: vengeance and swingtimer will overlap eachother, 
+            showSwingTimer = false, -- change the pos in the oUF_Neav file if you want both
             showStatusFlash = true,
             showCombatFeedback = false,
             
@@ -77,7 +82,7 @@ oUF_Neav = {
         targettarget = {
             scale = 1.0,
         },
-
+        
         focus = {
             mouseoverText = false,
             
@@ -101,7 +106,7 @@ oUF_Neav = {
         },
         
         party = {
-            show = true,
+            show = false,
             mouseoverText = true,
             
             scale = 1.0,
@@ -120,13 +125,18 @@ oUF_Neav = {
             height = 40,
             scale = 1.0, 
             iconSize = 20,
+            frameSpacing = 7,
+            
+            layout = {
+                position = {'LEFT', UIParent, 'CENTER', 400, -130}, -- just change the 'TOPLEFT' to 'BOTTOMRIGHT/LEFT' etc.
+                orientationHorizontal = 'RIGHT',  -- 'LEFT', 'RIGHT'
+            },
             
             numGroups = 8,
-
-            position = {'LEFT', UIParent, 'CENTER', 400, -130},
             
             showThreatText = false,
             showRolePrefix = false,
+            showRessurectText = true, -- 4.2 only
             
             showTargetBorder = true,
             targetBorderColor = {1, 1, 1},
@@ -135,16 +145,14 @@ oUF_Neav = {
             
             indicatorSize = 7,
             horizontalHealthBars = false,
-            
+
             manabar = {
                 show = false,
                 horizontalOrientation = false,
             },
-
        },
         
         boss = {
-            showCastbar = false,
             scale = 1.0,
 
             position = {'TOPRIGHT', UIParent, 'TOPRIGHT', -80, -300},
@@ -152,8 +160,6 @@ oUF_Neav = {
         
         arena = {
             show = true,
-            showCastbar = true,
-            
             scale = 1.0,
             
             auraSize = 18,
@@ -164,6 +170,8 @@ oUF_Neav = {
 
     castbar = {
         player = {
+            show = true, 
+                        
             width = 220,
             height = 19,
             
@@ -174,37 +182,86 @@ oUF_Neav = {
             classcolor = true,
             color = {1, 0.7, 0},
             
-            position = {'BOTTOM', UIParent, 0, 141},
+            icon = {
+                show = false,
+                position = 'RIGHT',   -- 'LEFT' or 'RIGHT'
+                positionOutside = true,
+            },
+            
+            position = {'BOTTOM', UIParent, 'BOTTOM', 0, 141},
         },
         
         pet = {
+            show = true, 
+                    
             width = 220,
             height = 19,
             color = {0, 0.65, 1},
-            position = {'BOTTOM', UIParent, 0, 390},
+                        
+            icon = {
+                show = false,
+                position = 'LEFT',   -- 'LEFT' or 'RIGHT'
+                positionOutside = true,
+            },
+            
+            position = {'BOTTOM', UIParent, 'BOTTOM', 0, 390},
+			
+			ignoreSpells = true, -- hides castbar for spells listed in "ignoreList"
+			ignoreList = {
+				3110,	-- firebolt (imp)
+				31707,	-- waterbolt (water elemental)
+			},
         },
         
         target = {
+            show = true, 
+            
             width = 220,
             height = 19,
+            
             color = {0.9, 0.1, 0.1},
             interruptColor = {1, 0, 1},
-            position = {'BOTTOM', UIParent, 0, 332},
+                        
+            icon = {
+                show = false,
+                position = 'LEFT',   -- 'LEFT' or 'RIGHT'
+                positionOutside = false,
+            },
+            
+            position = {'BOTTOM', UIParent, 'BOTTOM', 0, 332},
         },
         
         focus = {
+            show = true, 
+            
             width = 176,
             height = 19,
+            
             color = {0, 0.65, 1},
-            interruptColor = {1, 0, 1},
+            interruptColor = {1, 0, 1},     
+            
+            icon = {
+                show = false,
+                position = 'LEFT',   -- 'LEFT' or 'RIGHT'
+                positionOutside = true,
+            },
         },
         
         boss = {
             color = {1, 0, 0},
+                        
+            icon = {
+                size = 22,
+                show = false,                       
+                position = 'LEFT'   -- 'LEFT' or 'RIGHT' 
+            },
         },
         
         arena = {
-            iconSize = 22,
+            icon = {
+                size = 22,
+            },
+
             color = {1, 0, 0},
         },
     },
