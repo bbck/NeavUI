@@ -1,6 +1,6 @@
 
 nPower = {
-    position = {'CENTER', UIParent, 0, -23},
+    position = {'CENTER', UIParent, 0, -215},
     sizeWidth = 200,
         
     activeAlpha = 1,
