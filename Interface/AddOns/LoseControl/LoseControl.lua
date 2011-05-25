@@ -237,6 +237,11 @@ local anchors = {
 		party3 = "XPerl_party3portraitFrameportrait",
 		party4 = "XPerl_party4portraitFrameportrait",
 	},
+	oUF_Neav = {
+	    player = "oUF_Neav_Player",
+	    target = "oUF_Neav_Target",
+	    focus = "oUF_Neav_Focus",
+	}
 	-- more to come here?
 }
 
@@ -246,8 +251,8 @@ local DBdefaults = {
 	version = 4.1, -- This is the settings version, not necessarily the same as the LoseControl version
 	noCooldownCount = false,
 	tracking = { -- To Do: Priority
-		Immune		= false, --100
-		ImmuneSpell	= false, -- 90
+		Immune		= true, --100
+		ImmuneSpell	= true, -- 90
 		CC		= true,  -- 80
 		PvE		= true,  -- 70
 		Silence		= true,  -- 60
@@ -260,70 +265,83 @@ local DBdefaults = {
 			enabled = true,
 			size = 36,
 			alpha = 1,
-			anchor = "None",
+			anchor = "oUF_Neav",
+			point = "RIGHT",
+			relativePoint = "LEFT",
+			x = -15,
+			y = 0,
+			
 		},
 		target = {
 			enabled = true,
-			size = 56,
+			size = 36,
 			alpha = 1,
-			anchor = "Blizzard",
+			anchor = "oUF_Neav",
+			point = "LEFT",
+			relativePoint = "RIGHT",
+			x = 15,
+			y = 0,
 		},
 		focus = {
 			enabled = true,
-			size = 56,
+			size = 36,
 			alpha = 1,
-			anchor = "Blizzard",
+			anchor = "oUF_Neav",
+			point = "LEFT",
+			relativePoint = "RIGHT",
+			x = 15,
+			y = 0,
 		},
 		party1 = {
-			enabled = true,
+			enabled = false,
 			size = 36,
 			alpha = 1,
 			anchor = "Blizzard",
 		},
 		party2 = {
-			enabled = true,
+			enabled = false,
 			size = 36,
 			alpha = 1,
 			anchor = "Blizzard",
 		},
 		party3 = {
-			enabled = true,
+			enabled = false,
 			size = 36,
 			alpha = 1,
 			anchor = "Blizzard",
 		},
 		party4 = {
-			enabled = true,
+			enabled = false,
 			size = 36,
 			alpha = 1,
 			anchor = "Blizzard",
 		},
 		arena1 = {
-			enabled = true,
+			enabled = false,
 			size = 28,
 			alpha = 1,
 			anchor = "Blizzard",
 		},
 		arena2 = {
-			enabled = true,
+			enabled = false,
 			size = 28,
 			alpha = 1,
 			anchor = "Blizzard",
 		},
 		arena3 = {
-			enabled = true,
+			enabled = false,
 			size = 28,
 			alpha = 1,
 			anchor = "Blizzard",
 		},
 		arena4 = {
-			enabled = true,
+			enabled = false,
 			size = 28,
 			alpha = 1,
 			anchor = "Blizzard",
 		},
 		arena5 = {
-			enabled = true,
+			enabled = false,
 			size = 28,
 			alpha = 1,
 			anchor = "Blizzard",
@@ -742,6 +760,7 @@ function AnchorDropDown:initialize() -- called from OptionsPanel.refresh() and e
 	AddItem(self, "Blizzard", "Blizzard")
 	if _G[anchors["Perl"][unit]] then AddItem(self, "Perl", "Perl") end
 	if _G[anchors["XPerl"][unit]] then AddItem(self, "XPerl", "XPerl") end
+	if _G[anchors["oUF_Neav"][unit]] then AddItem(self, "oUF_Neav", "oUF_Neav") end
 end
 
 local StrataDropDownLabel = OptionsPanel:CreateFontString(O.."StrataDropDownLabel", "ARTWORK", "GameFontNormal")
