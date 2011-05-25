@@ -396,6 +396,10 @@ function LoseControl:PLAYER_ENTERING_WORLD() -- this correctly anchors enemy are
 		frame.y or 0
 	)
 	--self:SetAlpha(frame.alpha) -- doesn't seem to work; must manually set alpha after the cooldown is displayed, otherwise it doesn't apply.
+	
+	-- Beautycase skin
+	self:CreateBorder(11)
+	self:SetBorderPadding(1)
 end
 
 local WYVERN_STING = GetSpellInfo(19386)
@@ -485,7 +489,7 @@ function LoseControl:UNIT_AURA(unitId) -- fired when a (de)buff is gained/lost
 		self:Hide()
 	elseif maxExpirationTime ~= self.maxExpirationTime then -- this is a different (de)buff, so initialize the cooldown
 		self.maxExpirationTime = maxExpirationTime
-		if self.anchor ~= UIParent then
+		if self.anchor ~= (UIParent and _G[anchors["oUF_Neav"][self.unitId]]) then
 			self:SetFrameLevel(self.anchor:GetParent():GetFrameLevel()) -- must be dynamic, frame level changes all the time
 			if not self.drawlayer then
 				self.drawlayer = self.anchor:GetDrawLayer() -- back up the current draw layer
