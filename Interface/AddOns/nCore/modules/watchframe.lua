@@ -5,7 +5,7 @@ watchFrame:ClearAllPoints()
 watchFrame.ClearAllPoints = function() end
 watchFrame:SetPoint('TOPRIGHT', UIParent, -100, -250)
 watchFrame:SetClampedToScreen(true)
-watchFrame:SetMovable(1)
+watchFrame:SetMovable(true)
 watchFrame:SetUserPlaced(true)
 watchFrame.SetPoint = function() end
 watchFrame:SetScale(1.01)
@@ -13,7 +13,7 @@ watchFrame:SetScale(1.01)
 local watchHead = _G['WatchFrameHeader']
 watchHead:EnableMouse(true)
 watchHead:RegisterForDrag('LeftButton')
-watchHead:SetHitRectInsets(-15, -15, -5, -5)
+watchHead:SetHitRectInsets(-15, 0, -5, -5)
 watchHead:SetScript('OnDragStart', function(self) 
     if (IsShiftKeyDown()) then
         self:GetParent():StartMoving()

@@ -1,6 +1,6 @@
-## Interface: 40100
+## Interface: 40200
 ## Title: OmniCC
 ## Notes: Cooldown count for everything
 ## Author: Tuller
 
-basic.lua
+core.lua

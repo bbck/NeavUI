@@ -36,7 +36,7 @@ oUF:RegisterInitCallback(hook)
 
 local f, min, max = CreateFrame('Frame'), math.min, math.max 
 f:SetScript('OnUpdate', function()
-	local limit = 30/GetFramerate()
+	local limit = 40/GetFramerate()
 	for bar, value in pairs(smoothing) do
 		local cur = bar:GetValue()
 		local new = cur + min((value-cur)/3, max(value-cur, limit))
