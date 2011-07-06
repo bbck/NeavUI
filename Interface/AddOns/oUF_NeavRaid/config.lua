@@ -23,7 +23,7 @@ ns.config = {
 
             width = 42,
             height = 40,
-            scale = 101, 
+            scale = 1.1, 
 
             layout = {
                 frameSpacing = 7,
