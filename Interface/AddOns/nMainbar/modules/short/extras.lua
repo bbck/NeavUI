@@ -1,21 +1,24 @@
 
-if (not nMainbar.MainMenuBar.shortBar and not nMainbar.MainMenuBar.moveableExtraBars) then
+local _, nMainbar = ...
+local cfg = nMainbar.Config
+
+if (not cfg.MainMenuBar.shortBar and not cfg.MainMenuBar.moveableExtraBars) then
     return
 end
 
 function ShapeshiftBar_Update()
     local numForms = GetNumShapeshiftForms()
     if (numForms > 0) then
-		ShapeshiftBarFrame:Show()
-	else
-		ShapeshiftBarFrame:Hide()
-	end
-    
+        ShapeshiftBarFrame:Show()
+    else
+        ShapeshiftBarFrame:Hide()
+    end
+
     securecall('ShapeshiftBar_UpdateState')
 end
 
     -- moveable bars
-    
+
 for _, frame in pairs({        
     _G['PetActionBarFrame'],
     _G['ShapeshiftBarFrame'],
@@ -26,7 +29,7 @@ for _, frame in pairs({
 end
 
     -- key + alt-key and left mouse to move
-    
+
 for _, button in pairs({        
     _G['PossessButton1'],
     _G['PetActionButton1'],
@@ -34,10 +37,10 @@ for _, button in pairs({
 }) do
     button:ClearAllPoints()
     button:SetPoint('CENTER', UIParent, -100)
-    
+
     button:SetMovable(true)
     button:SetUserPlaced(true)
-    
+
     button:RegisterForDrag('LeftButton')
     button:HookScript('OnDragStart', function(self)
         if (IsShiftKeyDown() and IsAltKeyDown()) then

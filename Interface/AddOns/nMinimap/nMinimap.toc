@@ -3,8 +3,10 @@
 ## RequiredDeps: !Beautycase
 
 config.lua
+
 core.lua
+capture.lua
 calendar.lua
 clock.lua
 difficulty.lua
-extras.lua
+tab.lua

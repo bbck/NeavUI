@@ -1,11 +1,20 @@
 
-nMinimap = {
-    drawerMouseoverAlpha = 1,
-    drawerNoMouseoverAlpha = 0.55,
-	positionDrawerBelow = false, -- position the guild/friends drawer below the minimap instead of above
-	showDrawerOnMinimapMouseOver = false, -- shows the guild/friends drawer on mouse-over on the minimap
-	alwaysShowDrawer = false, -- always shows the drawer (overrides showDrawerOnMinimapMouseOver)
+local _, nMinimap = ...
 
-    showMouseoverZoneText = true,
-    alphaMouseoverZoneText = 1,
+nMinimap.Config = {
+    tab = {
+        show = true,
+
+        alphaMouseover = 1,
+        alphaNoMouseover = 0.55,
+        
+        showAlways = false,
+        showMinimapMouseover = true,
+        showBelowMinimap = false,
+    },
+
+    mouseover = {
+        zoneText = true,
+        instanceDifficulty = false,
+    },
 }

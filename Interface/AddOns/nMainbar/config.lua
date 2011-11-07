@@ -1,5 +1,9 @@
 
-nMainbar = {
+local _, nMainbar = ...
+
+nMainbar.Config = {
+    showPicomenu = true,
+
     button = { 
         showVehicleKeybinds = true,
         showKeybinds = true,
@@ -14,7 +18,7 @@ nMainbar = {
         hotkeyFontsize = 18,
         hotkeyFont = 'Interface\\AddOns\\nMainbar\\media\\font.ttf',
     },
-        
+
     color = {   -- Red, Green, Blue
         Normal = { 1, 1, 1 },
         IsEquipped = { 0, 1, 0 },
@@ -34,13 +38,13 @@ nMainbar = {
         fontsize = 14,
         font = 'Fonts\\ARIALN.ttf',
     },
-    
+
     repBar = {
         mouseover = true,
         fontsize = 14,
         font = 'Fonts\\ARIALN.ttf',
     },
-    
+
     MainMenuBar = {
         scale = 1,
         hideGryphons = false,
@@ -48,56 +52,56 @@ nMainbar = {
         shortBar = true,
         skinButton = true,
         
-        moveableExtraBars = false,  -- make the pet, possess, shapeshift and totembar moveable, even when the mainmenubar is not "short"
+        moveableExtraBars = false,      -- Make the pet, possess, shapeshift and totembar moveable, even when the mainmenubar is not "short"
     },
 
-    vehicle = {
+    vehicleBar = {
         scale = 0.8,
     },
-    
+
     petBar = {
-		mouseover = false,
-		scale = 1,
-		alpha = 1,
-		vertical = false,
+        mouseover = false,
+        scale = 1,
+        alpha = 1,
+        vertical = false,
     },
-    
+
     possessBar = {
         scale = 1,
         alpha = 1,
     },
-    
+
     stanceBar = {
         mouseover = false,
         hide = true,
         scale = 1,
         alpha = 1,
     },
-    
+
     multiBarLeft = {
         mouseover = true,
         alpha = 1,
         orderHorizontal = false,
     },
-    
+
     multiBarRight = {
         mouseover = true,
         alpha = 1,
         orderHorizontal = false,
     },
-    
+
     multiBarBottomLeft = {
         mouseover = false,
         alpha = 1,
     },
-    
+
     multiBarBottomRight = {
         mouseover = false,
         alpha = 1,
         orderVertical = false,
         verticalPosition = 'LEFT', -- 'LEFT' or 'RIGHT'
     },
-    
+
     totemManager = {
         scale = 1,
         alpha = 1,

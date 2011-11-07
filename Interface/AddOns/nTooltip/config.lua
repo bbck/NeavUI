@@ -1,28 +1,38 @@
 
-nTooltip = {
+local _, nTooltip = ...
+
+nTooltip.Config = {
+    fontSize = 15,
+    fontOutline = false,
+
     position = {
         'BOTTOMRIGHT', UIParent, 'BOTTOMRIGHT', -27.35, 197.35
     },
-    
+
     disableFade = false,                        -- Can cause errors or a buggy tooltip!
-    
+    showOnMouseover = false,
+
     reactionBorderColor = false,
     itemqualityBorderColor = true,
-    
-    showPlayerTitles = false,
-    showPVPIcons = false,                        -- Show pvp icons instead of just a prefix
+
     abbrevRealmNames = false, 
+    showPlayerTitles = false,
+    showUnitRole = true,
+    showPVPIcons = false,                       -- Show pvp icons instead of just a prefix
     showMouseoverTarget = true,
-    
     showItemLevel = false,
-    
+
     healthbar = {
         showHealthValue = false,
+
+        healthFormat = '$cur / $max',           -- Possible: $cur, $max, $deficit, $perc, $smartperc, $smartcolorperc, $colorperc
+        healthFullFormat = '$cur',              -- if the tooltip unit has 100% hp 
+
         fontSize = 13,
         font = 'Fonts\\ARIALN.ttf',
-        showOutline = false,
+        showOutline = true,
         textPos = 'CENTER',                     -- Possible 'TOP' 'BOTTOM' 'CENTER'
-        
+
         reactionColoring = false,               -- Overrides customColor 
         customColor = {
             apply = false, 
