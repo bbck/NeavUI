@@ -92,6 +92,18 @@ hooksecurefunc('PetActionBar_Update', function()
 end)
 
 hooksecurefunc('ActionButton_Update', function(self)
+	if self:GetName():match("ExtraActionButton") then return end
+
+	local buttonBg = _G[self:GetName()..'FloatingBG']
+
+	if (buttonBg) then
+		if buttonBg.UnregisterAllEvents then
+			buttonBg:UnregisterAllEvents()
+		end
+		buttonBg.Show = function() return end
+		buttonBg:Hide()
+	end
+
     if (IsSpecificButton(self, 'MultiCast')) then
         for _, icon in pairs({
             self:GetName(),
@@ -191,13 +203,17 @@ hooksecurefunc('ActionButton_Update', function(self)
 end)   
 
 hooksecurefunc('ActionButton_ShowGrid', function(self)
-    _G[self:GetName()..'NormalTexture']:SetVertexColor(cfg.color.Normal[1], cfg.color.Normal[2], cfg.color.Normal[3], 1) 
+	if (_G[self:GetName().."NormalTexture"]) then
+		_G[self:GetName()..'NormalTexture']:SetVertexColor(cfg.color.Normal[1], cfg.color.Normal[2], cfg.color.Normal[3], 1)
+	end
 
-    if (IsEquippedAction(self.action)) then
-        _G[self:GetName()..'Border']:SetAlpha(1)
-    else
-        _G[self:GetName()..'Border']:SetAlpha(0)
-    end
+	if (_G[self:GetName()..'Border']) then
+		if (IsEquippedAction(self.action)) then
+			_G[self:GetName()..'Border']:SetAlpha(1)
+		else
+			_G[self:GetName()..'Border']:SetAlpha(0)
+		end
+	end
 end)
 
 hooksecurefunc('ActionButton_UpdateUsable', function(self)
