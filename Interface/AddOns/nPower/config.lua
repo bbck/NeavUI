@@ -1,4 +1,3 @@
-
 nPower = {
     position = {'CENTER', UIParent, 0, -215},
     sizeWidth = 200,
@@ -30,6 +29,7 @@ nPower = {
     energy = {
         show = true,
         showComboPoints = true,
+        comboPointsBelow = true,
         
         comboColor = {
             [1] = {r = 1.0, g = 1.0, b = 1.0},

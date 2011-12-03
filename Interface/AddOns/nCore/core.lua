@@ -23,6 +23,7 @@ SlashCmdList['FRAMENAME'] = function()
         DEFAULT_CHAT_FRAME:AddMessage('|cff00FF00This frame has no name!')
     end
 end
+
 SLASH_FRAMENAME1 = '/frame'
 
 SlashCmdList['RELOADUI'] = function()
@@ -35,11 +36,6 @@ function AuraTest()
         return 'TestAura', nil, 'Interface\\Icons\\Spell_Nature_RavenForm', 9, nil, 120, 120, 1, 0 
     end
 end
-
-
-
-
-
 
 local grid
 local boxSize = 32
@@ -62,8 +58,8 @@ function Grid_Hide()
 end
 
 local isAligning = false
-SLASH_TOGGLEGRID1 = "/align"
-SlashCmdList["TOGGLEGRID"] = function(arg)
+SLASH_TOGGLEGRID1 = '/align'
+SlashCmdList['TOGGLEGRID'] = function(arg)
     if isAligning then
         Grid_Hide()
         isAligning = false
@@ -95,7 +91,7 @@ function Grid_Create()
 		else 
 			tx:SetTexture(0, 0, 0, 0.5) 
 		end 
-		tx:SetPoint("TOPLEFT", grid, "TOPLEFT", i*wStep - (size/2), 0) 
+		tx:SetPoint('TOPLEFT', grid, 'TOPLEFT', i*wStep - (size/2), 0) 
 		tx:SetPoint('BOTTOMRIGHT', grid, 'BOTTOMLEFT', i*wStep + (size/2), 0) 
 	end 
 	height = GetScreenHeight()
@@ -103,7 +99,7 @@ function Grid_Create()
 	do
 		local tx = grid:CreateTexture(nil, 'BACKGROUND') 
 		tx:SetTexture(1, 0, 0, 0.5)
-		tx:SetPoint("TOPLEFT", grid, "TOPLEFT", 0, -(height/2) + (size/2))
+		tx:SetPoint('TOPLEFT', grid, 'TOPLEFT', 0, -(height/2) + (size/2))
 		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2 + size/2))
 	end
 	
@@ -111,13 +107,13 @@ function Grid_Create()
 		local tx = grid:CreateTexture(nil, 'BACKGROUND') 
 		tx:SetTexture(0, 0, 0, 0.5)
 		
-		tx:SetPoint("TOPLEFT", grid, "TOPLEFT", 0, -(height/2+i*hStep) + (size/2))
+		tx:SetPoint('TOPLEFT', grid, 'TOPLEFT', 0, -(height/2+i*hStep) + (size/2))
 		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2+i*hStep + size/2))
 		
 		tx = grid:CreateTexture(nil, 'BACKGROUND') 
 		tx:SetTexture(0, 0, 0, 0.5)
 		
-		tx:SetPoint("TOPLEFT", grid, "TOPLEFT", 0, -(height/2-i*hStep) + (size/2))
+		tx:SetPoint('TOPLEFT', grid, 'TOPLEFT', 0, -(height/2-i*hStep) + (size/2))
 		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2-i*hStep + size/2))
 		
 	end
