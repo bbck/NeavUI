@@ -256,7 +256,7 @@ ns.Config = {
             powerTagFull = '$cur',
             powerTagNoMana = '$cur',
 
-            position = {'TOPRIGHT', UIParent, 'TOPRIGHT', -50, -250},
+            position = {'TOPRIGHT', UIParent, 'TOPRIGHT', -50, -375},
 
             castbar = {
                 color = {1, 0, 0},
