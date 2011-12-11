@@ -173,7 +173,7 @@ ns.Config = {
                     positionOutside = false,
                 },
 
-                position = {'BOTTOM', UIParent, 'BOTTOM', 0, 380},
+                position = {'BOTTOM', UIParent, 'BOTTOM', 0, 320},
             },
         },
 
