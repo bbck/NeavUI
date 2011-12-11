@@ -64,7 +64,7 @@ ns.Config = {
             showStatusFlash = true,
             showCombatFeedback = false,
             
-            position = {'BOTTOMLEFT', UIParent, 600, 300},
+            position = {'CENTER', UIParent, -225, -200},
             
             castbar = {
                 show = true, 
@@ -155,7 +155,7 @@ ns.Config = {
             showCombatFeedback = false,
             showUnitTypeTab = false,                                                        -- Shows a tab with the unit race or creature type
 
-            position = {'BOTTOMRIGHT', UIParent, -600, 300},
+            position = {'CENTER', UIParent, 50, -200},
 
             castbar = {
                 show = true, 
