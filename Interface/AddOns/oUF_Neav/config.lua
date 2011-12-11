@@ -137,7 +137,7 @@ ns.Config = {
             numBuffs = 20,
             numDebuffs = 20,
             colorPlayerDebuffsOnly = true,
-            disableAura = false,                                                            -- Disable Auras on this unitframe
+            disableAura = true,                                                            -- Disable Auras on this unitframe
 
             showComboPoints = false,
             showComboPointsAsNumber = false,
