@@ -26,7 +26,7 @@ local _, ns = ...
 ns.Config = {
     show = {
         castbars = true,
-        pvpicons = false,
+        pvpicons = true,
         classPortraits = false,
         threeDPortraits = false,                                                            -- 3DPortraits; Overrides classPortraits
         disableCooldown = false,                                                            -- Disable custom cooldown text to use addons like omnicc
@@ -48,7 +48,7 @@ ns.Config = {
 
     units = {
         ['player'] = {
-            scale = 1.0,
+            scale = 1.193,
             style = 'NORMAL',                                                               -- 'NORMAL' 'RARE' 'ELITE' 'CUSTOM'
             customTexture = 'Interface\\AddOns\\oUF_Neav\\media\\customFrameTexture',       -- Custom texture if style = 'CUSTOM'
 
@@ -62,17 +62,17 @@ ns.Config = {
             showVengeance = false,                                                          -- Attention: vengeance and swingtimer will overlap eachother, 
             showSwingTimer = false,                                                         -- Change the pos in the oUF_Neav file if you want both
             showStatusFlash = true,
-            showCombatFeedback = false,
-            
-            position = {'CENTER', UIParent, -225, -200},
-            
+            showCombatFeedback = true,
+
+            position = {'TOPLEFT', UIParent, 34, -30},
+
             castbar = {
                 show = true, 
 
                 width = 220,
                 height = 19,
-                scale = 1.132,
-                
+                scale = 0.93,
+
                 showLatency = true, 
                 showSafezone = true,
                 safezoneColor = {1, 0, 1},
@@ -91,7 +91,7 @@ ns.Config = {
         },
 
         ['pet'] = {
-            scale = 1.0,
+            scale = 1.193,
 
             auraSize = 22,
 
@@ -111,8 +111,8 @@ ns.Config = {
 
                 width = 220,
                 height = 19,
-                scale = 1.132,
-                
+                scale = 0.93,
+
                 color = {0, 0.65, 1},
 
                 icon = {
@@ -132,14 +132,14 @@ ns.Config = {
         },
 
         ['target'] = {
-            scale = 1.0,
+            scale = 1.193,
 
             numBuffs = 20,
             numDebuffs = 20,
             colorPlayerDebuffsOnly = true,
-            disableAura = true,                                                            -- Disable Auras on this unitframe
+            disableAura = false,                                                            -- Disable Auras on this unitframe
 
-            showComboPoints = false,
+            showComboPoints = true,
             showComboPointsAsNumber = false,
             numComboPointsColor = {0.9, 0, 0},                                              -- Textcolor of the combopoints if showComboPointsAsNumber = true
 
@@ -152,18 +152,18 @@ ns.Config = {
 
             showPowerPercent = false,
 
-            showCombatFeedback = false,
+            showCombatFeedback = true,
             showUnitTypeTab = false,                                                        -- Shows a tab with the unit race or creature type
 
-            position = {'CENTER', UIParent, 50, -200},
+            position = {'TOPLEFT', UIParent, 270, -30},
 
             castbar = {
                 show = true, 
 
                 width = 220,
                 height = 19,
-                scale = 1.132,
-                
+                scale = 0.93,
+
                 color = {0.9, 0.1, 0.1},
                 interruptColor = {1, 0, 1},
 
@@ -173,12 +173,12 @@ ns.Config = {
                     positionOutside = false,
                 },
 
-                position = {'BOTTOM', UIParent, 'BOTTOM', 0, 320},
+                position = {'BOTTOM', UIParent, 'BOTTOM', 0, 380},
             },
         },
 
         ['targettarget'] = {
-            scale = 1.0,
+            scale = 1.193,
             disableAura = false,                                                             -- Disable Auras on this unitframe
 
             mouseoverText = false,
@@ -187,7 +187,7 @@ ns.Config = {
        },
 
         ['focus'] = {
-            scale = 1.0,
+            scale = 1.193,
 
             numDebuffs = 6,
             
@@ -200,9 +200,9 @@ ns.Config = {
 
             showPowerPercent = false,
 
-            showCombatFeedback = false,
+            showCombatFeedback = true,
 
-            enableFocusToggleKeybind = false,
+            enableFocusToggleKeybind = true,
             focusToggleKey = 'type4',                                                       -- type1, type2 (mousebutton 1 or 2, 3, 4, 5 etc. works too)
 
             castbar = {
@@ -210,8 +210,8 @@ ns.Config = {
 
                 width = 176,
                 height = 19,
-                scale = 1.132,
-                
+                scale = 0.93,
+
                 color = {0, 0.65, 1},
                 interruptColor = {1, 0, 1},
 
@@ -224,7 +224,7 @@ ns.Config = {
         },
 
         ['focustarget'] = {
-            scale = 1.0,
+            scale = 1.193,
 
             mouseoverText = false,
             healthTag = '$perc',
@@ -256,7 +256,7 @@ ns.Config = {
             powerTagFull = '$cur',
             powerTagNoMana = '$cur',
 
-            position = {'TOPRIGHT', UIParent, 'TOPRIGHT', -50, -375},
+            position = {'TOPRIGHT', UIParent, 'TOPRIGHT', -50, -250},
 
             castbar = {
                 color = {1, 0, 0},

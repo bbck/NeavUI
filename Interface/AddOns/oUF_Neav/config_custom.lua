@@ -1,0 +1,23 @@
+local _, ns = ...
+
+ns.Config.show.pvpicons = false
+ns.Config.units.player.scale = 1.0
+ns.Config.units.player.showCombatFeedback = false
+ns.Config.units.player.position = {'CENTER', UIParent, -225, -200}
+ns.Config.units.player.castbar.scale = 1.132
+ns.Config.units.pet.scale = 1.0
+ns.Config.units.pet.castbar.scale = 1.132
+ns.Config.units.target.scale = 1.0
+ns.Config.units.target.disableAura = true
+ns.Config.units.target.showComboPoints = false
+ns.Config.units.target.showCombatFeedback = false
+ns.Config.units.target.position = {'CENTER', UIParent, 50, -200}
+ns.Config.units.target.castbar.scale = 1.132
+ns.Config.units.target.castbar.position = {'BOTTOM', UIParent, 'BOTTOM', 0, 320}
+ns.Config.units.targettarget.scale = 1.0
+ns.Config.units.focus.scale = 1.0
+ns.Config.units.focus.showCombatFeedback = false
+ns.Config.units.focus.enableFocusToggleKeybind = false
+ns.Config.units.focus.castbar.scale = 1.132
+ns.Config.units.focustarget.scale = 1.0
+ns.Config.units.boss.position = {'TOPRIGHT', UIParent, 'TOPRIGHT', -50, -375}

@@ -1,0 +1,3 @@
+local _, ns = ...
+
+ns.Config.units.raid.showSolo = false

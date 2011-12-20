@@ -6,7 +6,7 @@ nTooltip.Config = {
     fontOutline = false,
 
     position = {
-        'BOTTOMRIGHT', UIParent, 'BOTTOMRIGHT', -27.35, 197.35
+        'BOTTOMRIGHT', UIParent, 'BOTTOMRIGHT', -27.35, 27.35
     },
 
     disableFade = false,                        -- Can cause errors or a buggy tooltip!

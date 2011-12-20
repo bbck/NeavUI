@@ -1,0 +1,3 @@
+local _, nTooltip = ...
+
+nTooltip.Config.position = {'BOTTOMRIGHT', UIParent, 'BOTTOMRIGHT', -27.35, 197.35}

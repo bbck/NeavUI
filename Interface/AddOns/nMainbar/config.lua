@@ -6,7 +6,7 @@ nMainbar.Config = {
 
     button = { 
         showVehicleKeybinds = true,
-        showKeybinds = true,
+        showKeybinds = false,
         showMacronames = false,
 
         countFontsize = 19,
@@ -73,7 +73,7 @@ nMainbar.Config = {
 
     stanceBar = {
         mouseover = false,
-        hide = true,
+        hide = false,
         scale = 1,
         alpha = 1,
     },
