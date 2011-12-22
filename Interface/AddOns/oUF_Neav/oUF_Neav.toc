@@ -19,6 +19,7 @@ modules\smartthreat.lua
 modules\oUF_CombatFeedback\oUF_CombatFeedback.lua
 modules\oUF_Smooth\oUF_Smooth.lua
 
+kill.lua
 tags.lua
 castbar.lua
 core.lua
