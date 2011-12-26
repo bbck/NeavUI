@@ -5,6 +5,7 @@ ns.Config.units.player.scale = 1.0
 ns.Config.units.player.showCombatFeedback = false
 ns.Config.units.player.position = {'CENTER', UIParent, -225, -200}
 ns.Config.units.player.castbar.scale = 1.132
+ns.Config.units.player.castbar.position = {'BOTTOM', UIParent, 'BOTTOM', 0, 136}
 ns.Config.units.pet.scale = 1.0
 ns.Config.units.pet.castbar.scale = 1.132
 ns.Config.units.target.scale = 1.0
