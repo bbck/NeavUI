@@ -182,6 +182,29 @@ if player_name == "Thehermit" and player_class == "ROGUE" then
           icon = 0
         }
       }
+    },
+    [8] = {
+      spec = 2,
+      spellid = 51713, -- Shadow Dance
+      size = 36,
+      pos = { a1 = "CENTER", a2 = "CENTER", af = "UIParent", x = 21, y = -90 },
+      unit = "player",
+      validate_unit = true,
+      hide_ooc = false,
+      ismine = true,
+      desaturate = false,
+      match_spellid = false,
+      move_ingame = false,
+      alpha = {
+        found = {
+          frame = 1,
+          icon = 1
+        },
+        not_found = {
+          frame = 0,
+          icon = 0
+        }
+      }
     }
   }
   cfg.rf3_DebuffList = {
@@ -190,6 +213,29 @@ if player_name == "Thehermit" and player_class == "ROGUE" then
       spellid = 1943, -- Rupture
       size = 36,
       pos = { a1 = "CENTER", a2 = "CENTER", af = "UIParent", x = -63, y = -90 },
+      unit = "target",
+      validate_unit = true,
+      hide_ooc = true,
+      ismine = true,
+      desaturate = false,
+      match_spellid = false,
+      move_ingame = false,
+      alpha = {
+        found = {
+          frame = 1,
+          icon = 1
+        },
+        not_found = {
+          frame = 0,
+          icon = 0
+        }
+      }
+    },
+    [2] = {
+      spec = 2,
+      spellid = 16511, -- Hemorrhage
+      size = 36,
+      pos = { a1 = "CENTER", a2 = "CENTER", af = "UIParent", x = 63, y = -90 },
       unit = "target",
       validate_unit = true,
       hide_ooc = true,
