@@ -205,7 +205,30 @@ if player_name == "Thehermit" and player_class == "ROGUE" then
           icon = 0
         }
       }
-    }
+    },
+    [9] = {
+      spec = nil,
+      spellid = 109949, -- Fury of the Destroyer
+      size = 48,
+      pos = { a1 = "CENTER", a2 = "CENTER", af = "UIParent", x = 0, y = -140 },
+      unit = "player",
+      validate_unit = true,
+      hide_ooc = false,
+      ismine = true,
+      desaturate = false,
+      match_spellid = false,
+      move_ingame = false,
+      alpha = {
+        found = {
+          frame = 1,
+          icon = 1
+        },
+        not_found = {
+          frame = 0,
+          icon = 0
+        }
+      }
+    },
   }
   cfg.rf3_DebuffList = {
     [1] = {
