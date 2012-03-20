@@ -18,7 +18,7 @@ local _, player_class = UnitClass("player")
 -----------------------------
 
 cfg.highlightPlayerSpells = false  --player spells will have a blue border
-cfg.updatetime            = 0.2   --how fast should the timer update itself
+cfg.updatetime            = 0.1   --how fast should the timer update itself
 
 if player_name == "Thehermit" and player_class == "ROGUE" then
   cfg.rf3_BuffList = {
@@ -69,7 +69,7 @@ if player_name == "Thehermit" and player_class == "ROGUE" then
       }
     },
     [3] = {
-      spec = 1,
+      spec = 2,
       spellid = 13750, -- Adrenaline Rush
       size = 36,
       pos = { a1 = "CENTER", a2 = "CENTER", af = "UIParent", x = 21, y = -90 },
@@ -92,7 +92,7 @@ if player_name == "Thehermit" and player_class == "ROGUE" then
       }
     },
     [4] = {
-      spec = 1,
+      spec = 2,
       spellid = 13877, -- Blade Flurry
       size = 36,
       pos = { a1 = "CENTER", a2 = "CENTER", af = "UIParent", x = 63, y = -90 },
@@ -115,7 +115,7 @@ if player_name == "Thehermit" and player_class == "ROGUE" then
       }
     },
     [5] = {
-      spec = 1,
+      spec = 2,
       spellid = 84745, -- Shallow Insight
       size = 36,
       pos = { a1 = "CENTER", a2 = "CENTER", af = "UIParent", x = 105, y = -90 },
@@ -138,7 +138,7 @@ if player_name == "Thehermit" and player_class == "ROGUE" then
       }
     },
     [6] = {
-      spec = 1,
+      spec = 2,
       spellid = 84746, -- Moderate Insight
       size = 36,
       pos = { a1 = "CENTER", a2 = "CENTER", af = "UIParent", x = 105, y = -90 },
@@ -161,7 +161,7 @@ if player_name == "Thehermit" and player_class == "ROGUE" then
       }
     },
     [7] = {
-      spec = 1,
+      spec = 2,
       spellid = 84747, -- Deep Insight
       size = 36,
       pos = { a1 = "CENTER", a2 = "CENTER", af = "UIParent", x = 105, y = -90 },
@@ -184,7 +184,7 @@ if player_name == "Thehermit" and player_class == "ROGUE" then
       }
     },
     [8] = {
-      spec = 2,
+      spec = 3,
       spellid = 51713, -- Shadow Dance
       size = 36,
       pos = { a1 = "CENTER", a2 = "CENTER", af = "UIParent", x = 21, y = -90 },
@@ -255,7 +255,7 @@ if player_name == "Thehermit" and player_class == "ROGUE" then
       }
     },
     [2] = {
-      spec = 2,
+      spec = 3,
       spellid = 16511, -- Hemorrhage
       size = 36,
       pos = { a1 = "CENTER", a2 = "CENTER", af = "UIParent", x = 63, y = -90 },
