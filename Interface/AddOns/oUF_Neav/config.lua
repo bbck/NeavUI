@@ -4,7 +4,7 @@ local _, ns = ...
 --[[
 
     The 'Tag-System'
-        Possible: 
+        Possible:
             $cur                - Shows the current hp of the unit > 53,4k
             $max                - Shows the maximum hp of the unit > 105,3k
             $deficit            - Shows the deficit value > -10k
@@ -39,7 +39,7 @@ ns.Config = {
     },
 
     font = {
-        normal = 'Interface\\AddOns\\oUF_Neav\\media\\fontSmall.ttf',                       -- General font for all other  
+        normal = 'Interface\\AddOns\\oUF_Neav\\media\\fontSmall.ttf',                       -- General font for all other
         normalSize = 13,
 
         normalBig = 'Interface\\AddOns\\oUF_Neav\\media\\fontThick.ttf',                    -- Name font
@@ -59,7 +59,7 @@ ns.Config = {
             powerTagFull = '$cur',
             powerTagNoMana = '$cur',
 
-            showVengeance = false,                                                          -- Attention: vengeance and swingtimer will overlap eachother, 
+            showVengeance = false,                                                          -- Attention: vengeance and swingtimer will overlap eachother,
             showSwingTimer = false,                                                         -- Change the pos in the oUF_Neav file if you want both
             showStatusFlash = true,
             showCombatFeedback = false,
@@ -67,13 +67,13 @@ ns.Config = {
             position = {'TOPLEFT', UIParent, 34, -30},
 
             castbar = {
-                show = true, 
+                show = true,
 
                 width = 220,
                 height = 19,
                 scale = 0.93,
 
-                showLatency = true, 
+                showLatency = true,
                 showSafezone = true,
                 safezoneColor = {1, 0, 1},
 
@@ -107,7 +107,7 @@ ns.Config = {
             position = {43, -20},
 
             castbar = {
-                show = true, 
+                show = true,
 
                 width = 220,
                 height = 19,
@@ -121,7 +121,7 @@ ns.Config = {
                     positionOutside = true,
                 },
 
-                position = {'BOTTOM', UIParent, 'BOTTOM', 0, 390},
+                position = {'TOP', oUF_Neav_Player, 'BOTTOM', 0, -50},
 
                 ignoreSpells = true,                                                        -- Hides castbar for spells listed in 'ignoreList'
                 ignoreList = {
@@ -137,6 +137,7 @@ ns.Config = {
             numBuffs = 20,
             numDebuffs = 20,
             colorPlayerDebuffsOnly = true,
+            showAllTimers = false,                                                          -- If false, only the player debuffs have timer
             disableAura = false,                                                            -- Disable Auras on this unitframe
 
             showComboPoints = true,
@@ -155,7 +156,7 @@ ns.Config = {
             position = {'TOPLEFT', UIParent, 300, -30},
 
             castbar = {
-                show = true, 
+                show = true,
 
                 width = 220,
                 height = 19,
@@ -187,7 +188,6 @@ ns.Config = {
             scale = 1.193,
 
             numDebuffs = 6,
-            
             mouseoverText = false,
             healthTag = '$cur - $perc',
             healthTagFull = '$cur',
@@ -203,7 +203,7 @@ ns.Config = {
             focusToggleKey = 'type4',                                                       -- type1, type2 (mousebutton 1 or 2, 3, 4, 5 etc. works too)
 
             castbar = {
-                show = true, 
+                show = true,
 
                 width = 176,
                 height = 19,
@@ -230,7 +230,7 @@ ns.Config = {
 
         ['party'] = {
             scale = 1.11,
-            show = false,
+            show = true,
             hideInRaid = true,
 
             mouseoverText = true,
@@ -260,8 +260,8 @@ ns.Config = {
 
                 icon = {
                     size = 22,
-                    show = false,                       
-                    position = 'LEFT'   -- 'LEFT' or 'RIGHT' 
+                    show = false,
+                    position = 'LEFT'   -- 'LEFT' or 'RIGHT'
                 },
             },
         },
@@ -287,6 +287,10 @@ ns.Config = {
                 },
 
                 color = {1, 0, 0},
+            },
+
+            buffList = { -- A whitelist for buffs to display on arena frames
+                'Power Word: Shield',
             },
         },
     },

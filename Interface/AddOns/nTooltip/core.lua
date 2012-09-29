@@ -20,6 +20,33 @@ local tankIcon = '|TInterface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES.blp:13:13:0:0
 local healIcon = '|TInterface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES.blp:13:13:0:0:64:64:20:39:1:20|t'
 local damagerIcon = '|TInterface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES.blp:13:13:0:0:64:64:20:39:22:41|t'
 
+local symbiosis = {
+    gain = {
+        ['DEATHKNIGHT'] = { ['DK_BLOOD']            = 113072, ['DK_FROST']          = 113516, ['DK_UNHOLY']         = 113516, },
+        ['HUNTER']      = { ['HUNTER_BM']           = 113073, ['HUNTER_MM']         = 113073, ['HUNTER_SV']         = 113073, },
+        ['MAGE']        = { ['MAGE_ARCANE']         = 113074, ['MAGE_FIRE']         = 113074, ['MAGE_FROST']        = 113074, },
+        ['MONK']        = { ['MONK_BREW']           = 113306, ['MONK_MIST']         = 127361, ['MONK_WIND']         = 113275, },
+        ['PALADIN']     = { ['PALADIN_HOLY']        = 113269, ['PALADIN_PROT']      = 122287, ['PALADIN_RET']       = 113075, },
+        ['PRIEST']      = { ['PRIEST_DISC']         = 113506, ['PRIEST_HOLY']       = 113506, ['PRIEST_SHADOW']     = 113277, },
+        ['ROGUE']       = { ['ROGUE_ASS']           = 113613, ['ROGUE_COMBAT']      = 113613, ['ROGUE_SUB']         = 113613, },
+        ['SHAMAN']      = { ['SHAMAN_ELE']          = 113286, ['SHAMAN_ENHANCE']    = 113286, ['SHAMAN_RESTO']      = 113289, },
+        ['WARLOCK']     = { ['WARLOCK_AFFLICTION']  = 113295, ['WARLOCK_DEMO']      = 113295, ['WARLOCK_DESTRO']    = 113295, },
+        ['WARRIOR']     = { ['WARRIOR_ARMS']        = 122294, ['WARRIOR_FURY']      = 122294, ['WARRIOR_PROT']      = 122286, },
+    },
+    grant = {
+        ['DEATHKNIGHT'] =   { ['DRUID_BALANCE'] = 110570, ['DRUID_FERAL'] = 122282, ['DRUID_GUARDIAN'] = 122285, ['DRUID_RESTO'] = 110575, },
+        ['HUNTER'] =        { ['DRUID_BALANCE'] = 110588, ['DRUID_FERAL'] = 110597, ['DRUID_GUARDIAN'] = 110600, ['DRUID_RESTO'] = 19263, },
+        ['MAGE'] =          { ['DRUID_BALANCE'] = 110621, ['DRUID_FERAL'] = 110693, ['DRUID_GUARDIAN'] = 110694, ['DRUID_RESTO'] = 110696, },
+        ['MONK'] =          { ['DRUID_BALANCE'] = 126458, ['DRUID_FERAL'] = 128844, ['DRUID_GUARDIAN'] = 126453, ['DRUID_RESTO'] = 126456, },
+        ['PALADIN'] =       { ['DRUID_BALANCE'] = 110698, ['DRUID_FERAL'] = 110700, ['DRUID_GUARDIAN'] = 110701, ['DRUID_RESTO'] = 122288, },
+        ['PRIEST'] =        { ['DRUID_BALANCE'] = 110707, ['DRUID_FERAL'] = 110715, ['DRUID_GUARDIAN'] = 110717, ['DRUID_RESTO'] = 110718, },
+        ['ROGUE'] =         { ['DRUID_BALANCE'] = 110788, ['DRUID_FERAL'] = 110730, ['DRUID_GUARDIAN'] = 122289, ['DRUID_RESTO'] = 110791, },
+        ['SHAMAN'] =        { ['DRUID_BALANCE'] = 110802, ['DRUID_FERAL'] = 110807, ['DRUID_GUARDIAN'] = 110803, ['DRUID_RESTO'] = 110806, },
+        ['WARLOCK'] =       { ['DRUID_BALANCE'] = 122291, ['DRUID_FERAL'] = 110810, ['DRUID_GUARDIAN'] = 122290, ['DRUID_RESTO'] = 112970, },
+        ['WARRIOR'] =       { ['DRUID_BALANCE'] = 122292, ['DRUID_FERAL'] = 112997, ['DRUID_GUARDIAN'] = 113002, ['DRUID_RESTO'] = 113004, },
+    }
+}
+
 -- _G.TOOLTIP_DEFAULT_BACKGROUND_COLOR = {r = 0, g = 0, b = 0}
 
     -- Some tooltip changes
@@ -90,7 +117,7 @@ for _, tooltip in pairs({
 
     ShoppingTooltip1,
     ShoppingTooltip2,
-    ShoppingTooltip3,   
+    ShoppingTooltip3,
 
     WorldMapTooltip,
 
@@ -118,7 +145,7 @@ if (cfg.itemqualityBorderColor) then
 
         ShoppingTooltip1,
         ShoppingTooltip2,
-        ShoppingTooltip3,   
+        ShoppingTooltip3,
     }) do
         if (tooltip.beautyBorder) then
             tooltip:HookScript('OnTooltipSetItem', function(self)
@@ -162,7 +189,6 @@ local function GetItemLevel(unit)
         'Trinket1',
         'MainHand',
         'SecondaryHand',
-        'Ranged',
     }) do
         local slot = GetInventoryItemLink(unit, GetInventorySlotInfo(v..'Slot'))
         if (slot ~= nil) then
@@ -186,7 +212,7 @@ local function GetRealUnit(self)
     elseif (GetMouseFocus() and GetMouseFocus():GetAttribute('unit')) then
         return GetMouseFocus():GetAttribute('unit')
     elseif (select(2, self:GetUnit())) then
-        return select(2, self:GetUnit()) 
+        return select(2, self:GetUnit())
     else
         return 'mouseover'
     end
@@ -207,7 +233,7 @@ local function GetFormattedUnitClassification(unit)
         return '|cffFF0000'..BOSS..'|r '
     elseif (class == 'rareelite') then
         return '|cffFF66CCRare|r |cffFFFF00'..ELITE..'|r '
-    elseif (class == 'rare') then 
+    elseif (class == 'rare') then
         return '|cffFF66CCRare|r '
     elseif (class == 'elite') then
         return '|cffFFFF00'..ELITE..'|r '
@@ -223,7 +249,7 @@ local function GetFormattedUnitLevel(unit)
     elseif (UnitLevel(unit) == 0) then
         return '? '
     else
-        return format('|cff%02x%02x%02x%s|r ', diff.r*255, diff.g*255, diff.b*255, UnitLevel(unit))    
+        return format('|cff%02x%02x%02x%s|r ', diff.r*255, diff.g*255, diff.b*255, UnitLevel(unit))
     end
 end
 
@@ -234,7 +260,7 @@ local function GetFormattedUnitClass(unit)
     end
 end
 
-local function GetFormattedUnitString(unit) 
+local function GetFormattedUnitString(unit)
     if (UnitIsPlayer(unit)) then
         return GetFormattedUnitLevel(unit)..UnitRace(unit)..GetFormattedUnitClass(unit)
     else
@@ -287,7 +313,7 @@ local function GetUnitRaidIcon(unit)
     end
 end
 
-local function GetUnitPVPIcon(unit) 
+local function GetUnitPVPIcon(unit)
     local factionGroup = UnitFactionGroup(unit)
 
     if (UnitIsPVPFreeForAll(unit)) then
@@ -310,20 +336,20 @@ end
 local function AddMouseoverTarget(self, unit)
     local unitTargetName = UnitName(unit..'target')
     local unitTargetClassColor = RAID_CLASS_COLORS[select(2, UnitClass(unit..'target'))] or { r = 1, g = 0, b = 1 }
-    local unitTargetReactionColor = { 
-        r = select(1, UnitSelectionColor(unit..'target')), 
-        g = select(2, UnitSelectionColor(unit..'target')), 
-        b = select(3, UnitSelectionColor(unit..'target')) 
+    local unitTargetReactionColor = {
+        r = select(1, UnitSelectionColor(unit..'target')),
+        g = select(2, UnitSelectionColor(unit..'target')),
+        b = select(3, UnitSelectionColor(unit..'target'))
     }
 
     if (UnitExists(unit..'target')) then
-        if (UnitName('player') == unitTargetName) then   
+        if (UnitName('player') == unitTargetName) then
             self:AddLine(format('   '..GetUnitRaidIcon(unit..'target')..'|cffff00ff%s|r', string.upper(YOU)), 1, 1, 1)
         else
             if (UnitIsPlayer(unit..'target')) then
                 self:AddLine(format('   '..GetUnitRaidIcon(unit..'target')..'|cff%02x%02x%02x%s|r', unitTargetClassColor.r*255, unitTargetClassColor.g*255, unitTargetClassColor.b*255, unitTargetName:sub(1, 40)), 1, 1, 1)
             else
-                self:AddLine(format('   '..GetUnitRaidIcon(unit..'target')..'|cff%02x%02x%02x%s|r', unitTargetReactionColor.r*255, unitTargetReactionColor.g*255, unitTargetReactionColor.b*255, unitTargetName:sub(1, 40)), 1, 1, 1)                 
+                self:AddLine(format('   '..GetUnitRaidIcon(unit..'target')..'|cff%02x%02x%02x%s|r', unitTargetReactionColor.r*255, unitTargetReactionColor.g*255, unitTargetReactionColor.b*255, unitTargetName:sub(1, 40)), 1, 1, 1)
             end
         end
     end
@@ -338,8 +364,8 @@ GameTooltip:HookScript('OnTooltipSetUnit', function(self, ...)
             -- Hide player titles
 
         if (cfg.showPlayerTitles) then
-            if (UnitPVPName(unit)) then 
-                name = UnitPVPName(unit) 
+            if (UnitPVPName(unit)) then
+                name = UnitPVPName(unit)
             end
         end
 
@@ -366,14 +392,14 @@ GameTooltip:HookScript('OnTooltipSetUnit', function(self, ...)
         if (cfg.showUnitRole) then
             self:AddLine(GetUnitRoleString(unit), 1, 1, 1)
         end
-        
+
             -- Mouse over target with raidicon support
 
         if (cfg.showMouseoverTarget) then
             AddMouseoverTarget(self, unit)
         end
-  
-            -- Pvp flag prefix 
+
+            -- Pvp flag prefix
 
         for i = 3, GameTooltip:NumLines() do
             if (_G['GameTooltipTextLeft'..i]:GetText():find(PVP_ENABLED)) then
@@ -388,8 +414,8 @@ GameTooltip:HookScript('OnTooltipSetUnit', function(self, ...)
 
             -- Afk and dnd prefix
 
-        if (UnitIsAFK(unit)) then 
-            self:AppendText('|cff00ff00 <AFK>|r')   
+        if (UnitIsAFK(unit)) then
+            self:AppendText('|cff00ff00 <AFK>|r')
         elseif (UnitIsDND(unit)) then
             self:AppendText('|cff00ff00 <DND>|r')
         end
@@ -411,23 +437,11 @@ GameTooltip:HookScript('OnTooltipSetUnit', function(self, ...)
         GameTooltipStatusBar:SetPoint('LEFT', self:GetName()..'TextLeft'..self:NumLines(), 1, -3)
         GameTooltipStatusBar:SetPoint('RIGHT', self, -10, 0)
 
-            -- Show player item lvl
-
-        if (cfg.showItemLevel) then
-            if (unit and CanInspect(unit)) then
-                if (not ((InspectFrame and InspectFrame:IsShown()) or (Examiner and Examiner:IsShown()))) then
-                    NotifyInspect(unit)
-                    GameTooltip:AddLine('Item Level: ' .. GetItemLevel(unit))
-                    ClearInspectPlayer(unit)
-                end
-            end
-        end
-
             -- Border coloring
 
         if (cfg.reactionBorderColor and self.beautyBorder) then
             local r, g, b = UnitSelectionColor(unit)
-            
+
             self:SetBeautyBorderTexture('white')
             self:SetBeautyBorderColor(r, g, b)
         end
@@ -445,11 +459,49 @@ GameTooltip:HookScript('OnTooltipSetUnit', function(self, ...)
         end
 
             -- Custom healthbar coloring
-        
+
         if (cfg.healthbar.reactionColoring or cfg.healthbar.customColor.apply) then
             GameTooltipStatusBar:HookScript('OnValueChanged', function()
                 SetHealthBarColor(unit)
             end)
+        end
+
+            -- Show player item lvl
+
+        if (unit and CanInspect(unit)) then
+            if (not ((InspectFrame and InspectFrame:IsShown()) or (Examiner and Examiner:IsShown()))) then
+                NotifyInspect(unit)
+            end
+        end
+
+            -- Symbiosis
+
+        if (UnitIsPlayer(unit) and not UnitIsEnemy(unit, 'player')) then
+            local already = false
+            for i = 1, 40 do
+                if select(11, UnitAura(unit, i, 'HELPFUL')) == 110309 then
+                    already = true
+                    break
+                end
+            end
+
+            local class = select(2, UnitClass('player'))
+            local uclass = select(2, UnitClass(unit))
+            local spec = SPEC_CORE_ABILITY_TEXT[select(1, GetSpecializationInfo(GetSpecialization() or 1))]
+            local spellID = (class == 'DRUID' and uclass ~= 'DRUID') and symbiosis.grant[uclass][spec] or (class ~= 'DRUID' and uclass == 'DRUID') and symbiosis.grant[class][spec]
+            local name, _, icon = GetSpellInfo(spellID)
+
+            if already then
+                GameTooltip:AddLine(' ')
+                GameTooltip:AddLine('|cff3eea23'..select(1, GetSpellInfo(110309))..' already buffed|r')
+            end
+
+            if icon then
+                GameTooltip:AddLine(' ')
+                GameTooltip:AddDoubleLine('|T'..icon..':16:16:0:0:64:64:4:60:4:60|t '..name, '|cff3eea23'..select(1, GetSpellInfo(110309))..'|r')
+                self:Show()
+                if self.aura then self.aura:SetSize(self:GetWidth(), 0) end
+            end
         end
     end
 end)
@@ -470,6 +522,56 @@ hooksecurefunc('GameTooltip_SetDefaultAnchor', function(self, parent)
     if (cfg.showOnMouseover) then
         self:SetOwner(parent, 'ANCHOR_CURSOR')
     else
+        self:SetOwner(parent, 'ANCHOR_NONE')
         self:SetPoint(unpack(cfg.position))
+    end
+end)
+
+
+GameTooltip:RegisterEvent('INSPECT_READY')
+GameTooltip:SetScript('OnEvent', function(self, event, GUID)
+    if (not self:IsShown()) then
+        return
+    end
+
+    local _, unit = self:GetUnit()
+
+    if (not unit) then
+        return
+    end
+
+    if (event == 'INSPECT_READY' and UnitGUID(unit) == GUID) then
+        local id = GetInspectSpecialization(unit)
+        local _, spec, _, icon, _, _, class = GetSpecializationInfoByID(id)
+
+            -- Show spec icon
+
+        if (spec) then
+            local race = UnitRace(unit)
+
+            for i = 1, select('#', self:GetRegions()) do
+                local obj = select(i, self:GetRegions())
+
+                if (obj and obj:GetObjectType() == 'FontString') then
+                    if (obj:GetText() and obj:GetText():find(race)) then
+                        obj:SetText(obj:GetText()..' |T'..icon..':0|t')
+                    end
+                end
+            end
+        end
+
+            -- Show player item lvl
+
+        if (cfg.showItemLevel) then
+            local ilvl = GetItemLevel(unit)
+
+            if (ilvl > 1) then
+                GameTooltip:AddLine(STAT_AVERAGE_ITEM_LEVEL .. ': ' .. '|cffFFFFFF'..ilvl..'|r')
+            end
+        end
+
+        self:Show()
+
+        ClearInspectPlayer(unit)
     end
 end)

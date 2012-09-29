@@ -11,8 +11,8 @@ _G.HOUR_ONELETTER_ABBR = '|cffffffff%dh|r'
 _G.MINUTE_ONELETTER_ABBR = '|cffffffff%dm|r'
 _G.SECOND_ONELETTER_ABBR = '|cffffffff%d|r'
 
--- _G.DEBUFF_MAX_DISPLAY = 32 -- show more debuffs
--- _G.BUFF_MIN_ALPHA = 1
+_G.DEBUFF_MAX_DISPLAY = 32 -- show more debuffs
+_G.BUFF_MIN_ALPHA = 1
 --]]
 
 local origSecondsToTimeAbbrev = _G.SecondsToTimeAbbrev
@@ -40,6 +40,9 @@ end
 SecondsToTimeAbbrev = SecondsToTimeAbbrevHook
 
 BuffFrame:SetScript('OnUpdate', nil)
+hooksecurefunc(BuffFrame, 'Show', function(self)
+    self:SetScript('OnUpdate', nil)
+end)
 
 -- TemporaryEnchantFrame ...
 TempEnchant1:ClearAllPoints()
@@ -61,7 +64,6 @@ ConsolidatedBuffsCount:SetPoint('CENTER', ConsolidatedBuffsIcon, 0, 1)
 ConsolidatedBuffsCount:SetFont('Fonts\\ARIALN.ttf', cfg.buffFontSize+2, 'THINOUTLINE')
 ConsolidatedBuffsCount:SetShadowOffset(0, 0)
 
-ConsolidatedBuffsContainer:SetScale(0.57)
 ConsolidatedBuffsTooltip:SetScale(1.2)
 
 local function UpdateFirstButton(self)
@@ -84,7 +86,8 @@ end
 
 local function CheckFirstButton()
     if (BuffButton1) then
-        if (not BuffButton1:GetParent() == ConsolidatedBuffsContainer) then
+        --if (not BuffButton1:GetParent() == ConsolidatedBuffsContainer) then
+        if (not BuffButton1:GetParent() == ConsolidatedBuffsTooltipBuff1) then
             UpdateFirstButton(BuffButton1)
         end
     end
@@ -130,14 +133,14 @@ end)
 
 hooksecurefunc('DebuffButton_UpdateAnchors', function(self, index)
     local numBuffs = BUFF_ACTUAL_DISPLAY + BuffFrame.numEnchants
-    if (BuffFrame.numConsolidated > 0) then
-        numBuffs = numBuffs - BuffFrame.numConsolidated -- + 1
+    if (ShouldShowConsolidatedBuffFrame()) then
+        numBuffs = numBuffs + 1 -- consolidated buffs
     end
 
+    local rowSpacing
     local debuffSpace = cfg.buffSize + cfg.paddingY
     local numRows = ceil(numBuffs/cfg.buffPerRow)
 
-    local rowSpacing
     if (numRows and numRows > 1) then
         rowSpacing = -numRows * debuffSpace
     else
@@ -146,6 +149,7 @@ hooksecurefunc('DebuffButton_UpdateAnchors', function(self, index)
 
     local buff = _G[self..index]
     buff:ClearAllPoints()
+
     if (index == 1) then
         buff:SetPoint('TOP', TempEnchant1, 'BOTTOM', 0, rowSpacing)
     elseif (index >= 2 and mod(index, cfg.buffPerRow) == 1) then
@@ -195,7 +199,7 @@ end
 
 hooksecurefunc('AuraButton_Update', function(self, index)
     local button = _G[self..index]
-    
+
     if (button and not button.Shadow) then
         if (button) then
             if (self:match('Debuff')) then

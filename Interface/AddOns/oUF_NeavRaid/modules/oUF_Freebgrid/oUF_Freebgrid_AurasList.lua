@@ -5,31 +5,35 @@
 local _, ns = ...
 local oUF = ns.oUF or oUF
 
-local spellcache = setmetatable({}, {__index=function(t,v) 
-    local a = {GetSpellInfo(v)} 
-    if (GetSpellInfo(v)) then 
-        t[v] = a 
-    end 
+local spellcache = setmetatable({}, {__index=function(t,v)
+    local a = {GetSpellInfo(v)}
+    if (GetSpellInfo(v)) then
+        t[v] = a
+    end
 
-    return a 
+    return a
 end})
 
 local function GetSpellInfo(a)
     return unpack(spellcache[a])
 end
 
-    -- instance name and the instance ID, 
+    -- instance name and the instance ID,
     -- find out the instance ID by typing this in the chat "/run print(GetCurrentMapAreaID())"
     -- Note: Just must be in this instance, when you run the script above
-    
+
 local L = {
+    ['Terrace of Endless Spring'] = 886,
+    ['Heart of Fear'] = 897,
+    ['Mogu\'shan Vaults'] = 896,
+
     ['Baradin Hold'] = 752,
     ['Blackwing Descent'] = 754,
     ['The Bastion of Twilight'] = 758,
     ['Throne of the Four Winds'] = 773,
     ['Firelands'] = 800,
     ['Dragon Soul'] = 824,
-    
+
     -- ['Ulduar'] = 529,
     ['ToC'] = 543,
     ['Naxxramas'] = 535,
@@ -54,14 +58,14 @@ ns.auras = {
         -- NOTE: This does not show the aura, it needs to be in one of the other list too.
 
     ascending = {
-        [GetSpellInfo(92956)] = true, -- Wrack
+        [GetSpellInfo(89421)] = true, -- Wrack
     },
 
         -- General debuffs
 
     debuffs = {
-        [GetSpellInfo(39171)] = 9, -- Mortal Strike
-        [GetSpellInfo(76622)] = 9, -- Sunder Armor
+        [GetSpellInfo(115804)] = 9, -- Mortal Wounds
+        [GetSpellInfo(113746)] = 9, -- Weakened Armor
         [GetSpellInfo(51372)] = 1, -- Daze
         [GetSpellInfo(5246)] = 5, -- Intimidating Shout
         -- [GetSpellInfo(6788)] = 16, -- Weakened Soul
@@ -80,6 +84,91 @@ ns.auras = {
         -- Raid Debuffs
 
     instances = {
+        [L['Terrace of Endless Spring']] = {
+
+                -- Protectors of the Endless
+
+            [GetSpellInfo(117436)] = 5,    -- Lightning Prison
+            [GetSpellInfo(118091)] = 5,    -- Defiled Ground
+            [GetSpellInfo(117519)] = 5,    -- Touch of Sha
+
+                -- Tsulong
+
+            [GetSpellInfo(122752)] = 5,    -- Shadow Breath
+            [GetSpellInfo(123011)] = 5,    -- Terrorize
+            [GetSpellInfo(116161)] = 5,    -- Crossed Over
+
+                -- Lei Shi
+
+            [GetSpellInfo(123121)] = 5,    -- Spray
+
+                -- Sha of Fear
+
+            [GetSpellInfo(119985)] = 5,    -- Dread Spray
+            [GetSpellInfo(119086)] = 5,    -- Penetrating Bolt
+            [GetSpellInfo(119775)] = 5,    -- Reaching Attack
+        },
+
+        [L['Heart of Fear']] = {
+
+                -- Imperial Vizier Zor'lok
+
+            [GetSpellInfo(122761)] = 5,    -- Exhale
+            [GetSpellInfo(122760)] = 5, -- Exhale
+            [GetSpellInfo(122740)] = 5,    -- Convert
+            [GetSpellInfo(123812)] = 5,    -- Pheromones of Zeal
+
+                -- Blade Lord Ta'yak
+
+            [GetSpellInfo(123180)] = 5,    -- Wind Step
+            [GetSpellInfo(123474)] = 5,    -- Overwhelming Assault
+
+                -- Garalon
+
+            [GetSpellInfo(122835)] = 5,    -- Pheromones
+            [GetSpellInfo(123081)] = 5,    -- Pungency
+
+                -- Wind Lord Mel'jarak
+
+            [GetSpellInfo(122125)] = 5,    -- Corrosive Resin Pool
+            [GetSpellInfo(121885)] = 5,     -- Amber Prison
+
+                -- Amber-Shaper Un'sok
+
+            [GetSpellInfo(121949)] = 5,    -- Parasitic Growth
+
+                -- Grand Empress Shek'zeer
+        },
+
+        [L['Mogu\'shan Vaults']] = {
+
+                -- The Stone Guard
+
+            [GetSpellInfo(130395)] = 6, -- Jasper Chains: Stacks
+            [GetSpellInfo(130404)] = 3, -- Jasper Chains: Stacks
+            [GetSpellInfo(130774)] = 6, -- Amethyst Pool
+
+                -- Feng the Accursed
+
+            [GetSpellInfo(116942)] = 6, -- Flaming Spear
+
+                -- Gara'jal the Spiritbinder
+
+            [GetSpellInfo(116161)] = 8, -- Crossed Over
+            [GetSpellInfo(116161)] = 3, -- Voodoo Dolls
+
+                -- The Spirit Kings
+
+            [GetSpellInfo(118135)] = 6,    -- Pinned Down
+
+                -- Elagon
+
+                -- Will of the Emperor
+
+            [GetSpellInfo(116778)] = 7,    -- Focused Defense
+            [GetSpellInfo(116525)] = 7,    -- Focused Assault
+        },
+
         [L['Dragon Soul']] = {
             [GetSpellInfo(109075)] = 7, -- Fading Light, Ultraxion
         },
@@ -113,10 +202,10 @@ ns.auras = {
 
                 -- Maloriak
 
-            [GetSpellInfo(92973)] = 8, -- Consuming Flames
-            [GetSpellInfo(92978)] = 8, -- Flash Freeze
-            [GetSpellInfo(92976)] = 7, -- Biting Chill
-            [GetSpellInfo(91829)] = 7, -- Fixate
+            [GetSpellInfo(77786)] = 8, -- Consuming Flames
+            [GetSpellInfo(77699)] = 8, -- Flash Freeze
+            [GetSpellInfo(77760)] = 7, -- Biting Chill
+            --[GetSpellInfo(91829)] = 7, -- Fixate XXX: Gone?
             [GetSpellInfo(92787)] = 9, -- Engulfing Darkness
 
                 -- Atramedes
@@ -133,7 +222,7 @@ ns.auras = {
 
                 -- Nefarian
 
-            [GetSpellInfo(94128)] = 7, -- Tail Lash
+            [GetSpellInfo(77827)] = 7, -- Tail Lash
             -- [GetSpellInfo(94075)] = 8, -- Magma
             [GetSpellInfo(79339)] = 9, -- Explosive Cinders
             [GetSpellInfo(79318)] = 9, -- Dominion
@@ -144,7 +233,7 @@ ns.auras = {
                 -- Halfus
 
             [GetSpellInfo(39171)] = 7, -- Malevolent Strikes
-            [GetSpellInfo(86169)] = 8, -- Furious Roar
+            [GetSpellInfo(83710)] = 8, -- Furious Roar
 
                 -- Valiona & Theralion
 
@@ -159,14 +248,14 @@ ns.auras = {
             [GetSpellInfo(82762)] = 7, -- Waterlogged
             [GetSpellInfo(83099)] = 7, -- Lightning Rod
             [GetSpellInfo(82285)] = 7, -- Elemental Stasis
-            [GetSpellInfo(92488)] = 8, -- Gravity Crush
+            [GetSpellInfo(84948)] = 8, -- Gravity Crush
 
                 -- Cho'gall
 
             [GetSpellInfo(86028)] = 6, -- Cho's Blast
             [GetSpellInfo(86029)] = 6, -- Gall's Blast
-            [GetSpellInfo(93189)] = 7, -- Corrupted Blood
-            [GetSpellInfo(93133)] = 7, -- Debilitating Beam
+            [GetSpellInfo(81701)] = 7, -- Corrupted Blood
+            [GetSpellInfo(82411)] = 7, -- Debilitating Beam
             [GetSpellInfo(81836)] = 8, -- Corruption: Accelerated
             [GetSpellInfo(81831)] = 8, -- Corruption: Sickness
             [GetSpellInfo(82125)] = 8, -- Corruption: Malformation
@@ -174,7 +263,7 @@ ns.auras = {
 
                 -- Sinestra
 
-            [GetSpellInfo(92956)] = 9, -- Wrack
+            [GetSpellInfo(89421)] = 9, -- Wrack
         },
 
         [L['Throne of the Four Winds']] = {
@@ -183,37 +272,37 @@ ns.auras = {
 
             [GetSpellInfo(85576)] = 9, -- Withering Winds
             [GetSpellInfo(85573)] = 9, -- Deafening Winds
-            [GetSpellInfo(93057)] = 7, -- Slicing Gale
+            [GetSpellInfo(86182)] = 7, -- Slicing Gale
             [GetSpellInfo(86481)] = 8, -- Hurricane
-            [GetSpellInfo(93123)] = 7, -- Wind Chill
-            [GetSpellInfo(93121)] = 8, -- Toxic Spores
+            [GetSpellInfo(84645)] = 7, -- Wind Chill
+            [GetSpellInfo(86282)] = 8, -- Toxic Spores
 
                 -- Al'Akir
 
             -- [GetSpellInfo(93281)] = 7, -- Acid Rain
             [GetSpellInfo(87873)] = 7, -- Static Shock
             [GetSpellInfo(88427)] = 7, -- Electrocute
-            [GetSpellInfo(93294)] = 8, -- Lightning Rod
-            [GetSpellInfo(93284)] = 9, -- Squall Line
+            [GetSpellInfo(89667)] = 8, -- Lightning Rod
+            [GetSpellInfo(87856)] = 9, -- Squall Line
         },
 
             -- Naxxramas
 
-        [L['Naxxramas']] = {      
-            [GetSpellInfo(27808)] = 9, -- Frost Blast, Kel'Thuzad    
+        [L['Naxxramas']] = {
+            [GetSpellInfo(27808)] = 9, -- Frost Blast, Kel'Thuzad
         },
 
             -- Trial of Crusader
 
-        [L['ToC']] = {    
+        [L['ToC']] = {
             [GetSpellInfo(66869)] = 8, -- Burning Bile
             [GetSpellInfo(66823)] = 10, -- Paralizing Toxin
-            [GetSpellInfo(67049)] = 9, -- Incinerate Flesh
+            [GetSpellInfo(66237)] = 9, -- Incinerate Flesh
         },
 
             -- Ruby Sanctum
 
-        [L['Ruby Sanctum']] = {     
+        [L['Ruby Sanctum']] = {
             [GetSpellInfo(74562)] = 8, -- Fiery Combustion, Halion
             [GetSpellInfo(74792)] = 8, -- Soul Consumption, Halion
         },
@@ -222,10 +311,10 @@ ns.auras = {
 
         [L['Icecrown']] = {
             [GetSpellInfo(69057)] = 9, -- Bone Spike Graveyard
-            [GetSpellInfo(72448)] = 9, -- Rune of Blood
+            [GetSpellInfo(72410)] = 9, -- Rune of Blood
             [GetSpellInfo(72293)] = 10, -- Mark of the Fallen Champion, Deathbringer Saurfang
 
-            [GetSpellInfo(71224)] = 9, -- Mutated Infection, Rotface
+            [GetSpellInfo(69674)] = 9, -- Mutated Infection, Rotface
             [GetSpellInfo(72272)] = 9, -- Vile Gas, Festergut
             [GetSpellInfo(69279)] = 8, -- Gas Spore, Festergut
 

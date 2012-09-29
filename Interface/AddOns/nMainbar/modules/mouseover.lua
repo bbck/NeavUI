@@ -2,26 +2,14 @@
 local _, nMainbar = ...
 local cfg = nMainbar.Config
 
-local function GetNumShapeSlots()
-    local _, class = UnitClass('Player')
-    
-    if (class == 'DEATHKNIGHT' or class == 'WARRIOR') then
-        return 3
-    elseif (class == 'ROGUE' or class == 'PRIEST') then
-        return 1
-    else
-        return NUM_SHAPESHIFT_SLOTS
-    end
-end
-
     -- mouseover function
 
-local function EnableMouseOver(self, bar, min, max, alpha)
-    local minAlpha = 0
+local function EnableMouseOver(self, bar, min, max, alpha, hiddenAlpha)
+    local minAlpha = hiddenAlpha or 0
 
     for i = min, max do
         local button = _G[self..i]
-        
+
         local f = CreateFrame('Frame', bar, bar)
         f:SetFrameStrata('LOW')
         f:SetFrameLevel(1)
@@ -54,25 +42,25 @@ local function EnableMouseOver(self, bar, min, max, alpha)
 end
 
 if (cfg.multiBarLeft.mouseover) then
-    EnableMouseOver('MultiBarLeftButton', MultiBarLeft, 1, 12, cfg.multiBarLeft.alpha)
+    EnableMouseOver('MultiBarLeftButton', MultiBarLeft, 1, 12, cfg.multiBarLeft.alpha, cfg.multiBarLeft.hiddenAlpha)
 end
 
 if (cfg.multiBarRight.mouseover) then
-    EnableMouseOver('MultiBarRightButton', MultiBarRight, 1, 12, cfg.multiBarRight.alpha)
+    EnableMouseOver('MultiBarRightButton', MultiBarRight, 1, 12, cfg.multiBarRight.alpha, cfg.multiBarRight.hiddenAlpha)
 end
 
 if (cfg.multiBarBottomLeft.mouseover) then
-    EnableMouseOver('MultiBarBottomLeftButton', MultiBarBottomLeft, 1, 12, cfg.multiBarBottomLeft.alpha)
+    EnableMouseOver('MultiBarBottomLeftButton', MultiBarBottomLeft, 1, 12, cfg.multiBarBottomLeft.alpha, cfg.multiBarBottomLeft.hiddenAlpha)
 end
 
 if (cfg.multiBarBottomRight.mouseover) then
-    EnableMouseOver('MultiBarBottomRightButton', MultiBarBottomRight, 1, 12, cfg.multiBarBottomRight.alpha)
+    EnableMouseOver('MultiBarBottomRightButton', MultiBarBottomRight, 1, 12, cfg.multiBarBottomRight.alpha, cfg.multiBarBottomRight.hiddenAlpha)
 end
 
 if (cfg.petBar.mouseover) then
-    EnableMouseOver('PetActionButton', PetActionBarFrame, 1, 10, cfg.petBar.alpha)
+    EnableMouseOver('PetActionButton', PetActionBarFrame, 1, 10, cfg.petBar.alpha, cfg.petBar.hiddenAlpha)
 end
 
 if (cfg.stanceBar.mouseover) then
-    EnableMouseOver('ShapeshiftButton', ShapeshiftBarFrame, 1, GetNumShapeSlots(), cfg.stanceBar.alpha)
+    EnableMouseOver('StanceButton', StanceBarFrame, 1, NUM_STANCE_SLOTS, cfg.stanceBar.alpha, cfg.stanceBar.hiddenAlpha)
 end

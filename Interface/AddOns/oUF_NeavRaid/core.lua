@@ -15,11 +15,16 @@ do
             {33763, 'BOTTOM', {0.5, 1, 0.5}, false, false, true}, -- Lifebloom
             {48438, 'BOTTOMLEFT', {0.7, 1, 0}}, -- Wild Growth
         },
-        MAGE = {
-            {54648, 'BOTTOMRIGHT', {0.7, 0, 1}, true, true}, -- Focus Magic
-        },
+		MONK = {
+			{119611, 'BOTTOMRIGHT', {0, 1, 0}}, -- Renewing Mist
+			{124682, 'BOTTOMLEFT', {0.15, 0.98, 0.64}}, -- Enveloping Mist
+			{115175, 'TOPRIGHT', {0.15, 0.98, 0.64}}, -- Soothing Mist
+			{116849, 'TOPLEFT', {1, 1, 0}}, -- Life Cocoon
+			{124081, 'BOTTOMLEFT', {0.7, 0.8, 1}}, -- Zen Sphere
+		},
         PALADIN = {
             {53563, 'BOTTOMRIGHT', {0, 1, 0}}, -- Beacon of Light
+            {20925, 'BOTTOMRIGHT', {1, 1, 0}}, -- Sacred Shield
         },
         PRIEST = {
             {6788, 'BOTTOMRIGHT', {0.6, 0, 0}, true}, -- Weakened Soul
@@ -30,12 +35,11 @@ do
         SHAMAN = {
             {61295, 'TOPLEFT', {0.7, 0.3, 0.7}}, -- Riptide
             {51945, 'TOPRIGHT', {0.2, 0.7, 0.2}}, -- Earthliving
-            {16177, 'BOTTOMLEFT', {0.4, 0.7, 0.2}}, -- Ancestral Fortitude
+            --{16177, 'BOTTOMLEFT', {0.4, 0.7, 0.2}}, -- Ancestral Fortitude -- XXX: Removed in MoP?
             {974, 'BOTTOMRIGHT', {0.7, 0.4, 0}, false, true}, -- Earth Shield
         },
         WARLOCK = {
             {20707, 'BOTTOMRIGHT', {0.7, 0, 1}, true, true}, -- Soulstone
-            {85767, 'BOTTOMLEFT', {0.7, 0.5, 1}, true, true, true}, -- Dark Intent
         },
         ALL = {
             {23333, 'TOPLEFT', {1, 0, 0}}, -- Warsong flag, Horde
@@ -467,14 +471,14 @@ local function CreateRaidLayout(self, unit)
 
     if (config.units.raid.horizontalHealthBars) then
         otherBar:SetOrientation('HORIZONTAL')
-        otherBar:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT')
-        otherBar:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
-        otherBar:SetWidth(self.Health:GetWidth())
+        otherBar:SetPoint('TOPLEFT', myBar:GetStatusBarTexture(), 'TOPRIGHT')
+        otherBar:SetPoint('BOTTOMLEFT', myBar:GetStatusBarTexture(), 'BOTTOMRIGHT')
+        otherBar:SetWidth(self:GetWidth())
     else
         otherBar:SetOrientation('VERTICAL')
-        otherBar:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'TOPLEFT')
-        otherBar:SetPoint('BOTTOMRIGHT', self.Health:GetStatusBarTexture(), 'TOPRIGHT')
-        otherBar:SetHeight(self.Health:GetHeight())
+        otherBar:SetPoint('BOTTOMLEFT', myBar:GetStatusBarTexture(), 'TOPLEFT')
+        otherBar:SetPoint('BOTTOMRIGHT', myBar:GetStatusBarTexture(), 'TOPRIGHT')
+        otherBar:SetHeight(self:GetHeight())
     end
 
     self.HealPrediction = {

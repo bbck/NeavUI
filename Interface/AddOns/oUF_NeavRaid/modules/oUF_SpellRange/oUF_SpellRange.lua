@@ -21,10 +21,47 @@ local UpdateFrame
 local Objects = {}
 local ObjectRanges = {}
 
-    -- Array of possible spell IDs in order of priority, and the name of the highest known priority spell
+-- Array of possible spell IDs in order of priority, and the name of the highest known priority spell
 
-local HelpIDs, HelpName 
-local HarmIDs, HarmName
+local HelpName
+local HarmName
+
+local _, playerClass = UnitClass('player')
+
+-- Optional lists of low level baseline skills with greater than 28 yard range.
+-- First known spell in the appropriate class list gets used.
+-- Note: Spells probably shouldn't have minimum ranges!
+
+local HelpIDs = ({
+    DEATHKNIGHT = { 47541 }, -- Death Coil (40yd) - Starter
+    DRUID = { 5185 }, -- Healing Touch (40yd) - Lvl 3
+    -- HUNTER = {},
+    MAGE = { 475 }, -- Remove Curse (40yd) - Lvl 30
+    MONK = { 115450 }, -- Detox (40yd) - Lvl 20
+    PALADIN = { 85673 }, -- Word of Glory (40yd) - Lvl 9
+    PRIEST = { 2061 }, -- Flash Heal (40yd) - Lvl 3
+    -- ROGUE = {},
+    SHAMAN = { 8004 }, -- Healing Surge (40yd) - Lvl 7
+    WARLOCK = { 5697 }, -- Unending Breath (30yd) - Lvl 16
+    -- WARRIOR = {},
+})[playerClass]
+
+local HarmIDs = ({
+    DEATHKNIGHT = { 47541 }, -- Death Coil (30yd) - Starter
+    DRUID = { 5176 }, -- Wrath (40yd) - Starter
+    HUNTER = { 75 }, -- Auto Shot (5-40yd) - Starter
+    MAGE = { 133 }, -- Fireball (40yd) - Starter
+    MONK = { 115546 }, -- Provoke (40yd) - Lvl 14
+    PALADIN = {
+        62124, -- Hand of Reckoning (30yd) - Lvl 14
+        879, -- Exorcism (30yd) - Lvl 18
+    },
+    PRIEST = { 589 }, -- Shadow Word: Pain (40yd) - Lvl 4
+    -- ROGUE = {},
+    SHAMAN = { 403 }, -- Lightning Bolt (30yd) - Starter
+    WARLOCK = { 686 }, -- Shadow Bolt (40yd) - Starter
+    WARRIOR = { 355 }, -- Taunt (30yd) - Lvl 12
+})[playerClass]
 
 local IsInRange
 do
@@ -38,39 +75,42 @@ do
     local UnitInRange = UnitInRange
     local IsSpellInRange = IsSpellInRange
     local CheckInteractDistance = CheckInteractDistance
-    
-        -- Uses an appropriate range check for the given unit.
-        -- Actual range depends on reaction, known spells, and status of the unit.
-        -- @param UnitID  Unit to check range for.
-        -- @return True if in casting range
 
-    function IsInRange ( UnitID )
-        if (UnitIsConnected( UnitID )) then
-            if (UnitCanAssist('player', UnitID)) then
-                if ( HelpName and not UnitIsDead(UnitID)) then
-                    return IsSpellInRange( HelpName, UnitID) == 1
-                elseif (not UnitOnTaxi('player') -- UnitInRange always returns nil while on flightpaths
-                and (UnitIsUnit(UnitID, 'player') or UnitIsUnit(UnitID, 'pet')
-                or UnitPlayerOrPetInParty(UnitID) or UnitPlayerOrPetInRaid(UnitID))) then
-                    return UnitInRange(UnitID) -- Fast checking for self and party members (38 yd range)
+	-- Uses an appropriate range check for the given unit.
+	-- Actual range depends on reaction, known spells, and status of the unit.
+	-- @param unit  Unit to check range for.
+	-- @return True if in casting range
+    function IsInRange(unit)
+        if (UnitIsConnected(unit)) then
+            if (UnitCanAssist('player', unit)) then
+                if (HelpName and not UnitIsDead(unit)) then
+                    return IsSpellInRange(HelpName, unit) == 1 and true or false
+                elseif (UnitOnTaxi('player')) then  -- UnitInRange always returns nil while on flightpaths
+                    return false
+                elseif (UnitIsUnit(unit, 'player') or UnitIsUnit(unit, 'pet') or UnitPlayerOrPetInParty(unit) or UnitPlayerOrPetInRaid(unit)) then
+                    local inRange, checkedRange = UnitInRange(unit)
+                    if (checkedRange and not inRange) then
+                        return false
+                    else
+                        return true
+                    end
                 end
-            elseif (HarmName and not UnitIsDead(UnitID) and UnitCanAttack('player', UnitID)) then
-                return IsSpellInRange(HarmName, UnitID) == 1
+            elseif (HarmName and not UnitIsDead(unit) and UnitCanAttack('player', unit)) then
+                return IsSpellInRange(HarmName, unit) == 1 and true or false
             end
 
                 -- Fallback when spell not found or class uses none
 
-            return CheckInteractDistance(UnitID, 4) -- Follow distance (28 yd range)
+            return CheckInteractDistance(unit, 4) and true or false -- Follow distance (28 yd range)
         end
     end
 end
 
-    -- Rechecks range for a unit frame, and fires callbacks when the unit passes in or out of range
-
+-- Rechecks range for a unit frame, and fires callbacks when the unit passes in or out of range
 local function UpdateRange(self)
-    local InRange = not not IsInRange(self.unit) -- Cast to boolean
-    if (ObjectRanges[ self ] ~= InRange) then -- Range state changed
-        ObjectRanges[ self ] = InRange;
+    local InRange = IsInRange(self.unit)
+    if (ObjectRanges[self] ~= InRange) then -- Range state changed
+        ObjectRanges[self] = InRange
 
         local SpellRange = self.SpellRange
         if (SpellRange.Update) then
@@ -86,9 +126,8 @@ local OnUpdate;
 do
     local NextUpdate = 0
 
-        -- Updates the range display for all visible oUF unit frames on an interval
-
-    function OnUpdate (self, Elapsed)
+	-- Updates the range display for all visible oUF unit frames on an interval
+    function OnUpdate(self, Elapsed)
         NextUpdate = NextUpdate - Elapsed
         if (NextUpdate <= 0) then
             NextUpdate = UpdateRate
@@ -107,8 +146,7 @@ do
     local IsSpellKnown = IsSpellKnown
     local GetSpellInfo = GetSpellInfo
 
-        -- @return Highest priority spell name available, or nil if none
-
+	-- @return Highest priority spell name available, or nil if none
     local function GetSpellName(IDs)
         if (IDs) then
             for _, ID in ipairs(IDs) do
@@ -119,15 +157,14 @@ do
         end
     end
 
-        -- Checks known spells for the highest priority spell name to use
-
+	-- Checks known spells for the highest priority spell name to use
     function OnSpellsChanged()
         HelpName, HarmName = GetSpellName(HelpIDs), GetSpellName(HarmIDs)
     end
 end
 
 
---- Called by oUF when the unit frame's unit changes or otherwise needs a complete update.
+-- Called by oUF when the unit frame's unit changes or otherwise needs a complete update.
 -- @param Event  Reason for the update.  Can be a real event, nil, or a string defined by oUF.
 local function Update (self, Event, UnitID)
     if (Event ~= 'OnTargetUpdate') then -- OnTargetUpdate is fired on a timer for *target units that don't have real events
@@ -136,21 +173,19 @@ local function Update (self, Event, UnitID)
     end
 end
 
-    -- Forces range to be recalculated for this element's frame immediately.
+-- Forces range to be recalculated for this element's frame immediately.
 local function ForceUpdate(self)
     return Update(self.__owner, 'ForceUpdate', self.__owner.unit)
 end
 
-    -- Called by oUF for new unit frames to setup range checking.
-    -- @return True if the range element was actually enabled.
-
+-- Called by oUF for new unit frames to setup range checking.
+-- @return True if the range element was actually enabled.
 local function Enable(self, UnitID)
     local SpellRange = self.SpellRange
     if (SpellRange) then
         assert(type( SpellRange ) == 'table', 'oUF layout addon using invalid SpellRange element.')
-        assert(type(SpellRange.Update) == 'function'
-            or (tonumber(SpellRange.insideAlpha) and tonumber(SpellRange.outsideAlpha)),
-            'oUF layout addon omitted required SpellRange properties.')
+        assert(type(SpellRange.Update) == 'function' or (tonumber(SpellRange.insideAlpha) and tonumber(SpellRange.outsideAlpha)), 'oUF layout addon omitted required SpellRange properties.')
+
         if (self.Range) then -- Disable default range checking
             self:DisableElement('Range')
             self.Range = nil -- Prevent range element from enabling, since enable order isn't stable
@@ -168,54 +203,21 @@ local function Enable(self, UnitID)
             UpdateFrame:RegisterEvent('SPELLS_CHANGED')
             OnSpellsChanged() -- Recheck spells immediately
         end
-        
+
         Objects[self] = true
         return true
     end
 end
+
 --- Called by oUF to disable range checking on a unit frame.
 local function Disable(self)
     Objects[self] = nil
     ObjectRanges[self] = nil
+
     if (not next(Objects))then -- Last object
         UpdateFrame:Hide()
         UpdateFrame:UnregisterEvent('SPELLS_CHANGED')
     end
 end
 
-local _, Class = UnitClass('player')
-
-    -- Optional lists of low level baseline skills with greater than 28 yard range.
-    -- First known spell in the appropriate class list gets used.
-    -- Note: Spells probably shouldn't have minimum ranges!
-
-HelpIDs = ( {
-    DEATHKNIGHT = { 47541 }; -- Death Coil (40yd) - Starter
-    DRUID = { 5185 }; -- Healing Touch (40yd) - Lvl 3
-    -- HUNTER = {};
-    MAGE = { 475 }; -- Remove Curse (40yd) - Lvl 30
-    PALADIN = { 85673 }; -- Word of Glory (40yd) - Lvl 9
-    PRIEST = { 2061 }; -- Flash Heal (40yd) - Lvl 3
-    -- ROGUE = {};
-    SHAMAN = { 331 }; -- Healing Wave (40yd) - Lvl 7
-    WARLOCK = { 5697 }; -- Unending Breath (30yd) - Lvl 16
-    -- WARRIOR = {};
-} )[ Class ];
-
-HarmIDs = ( {
-    DEATHKNIGHT = { 47541 }; -- Death Coil (30yd) - Starter
-    DRUID = { 5176 }; -- Wrath (40yd) - Starter
-    HUNTER = { 75 }; -- Auto Shot (5-40yd) - Starter
-    MAGE = { 133 }; -- Fireball (40yd) - Starter
-    PALADIN = {
-        62124, -- Hand of Reckoning (30yd) - Lvl 14
-        879, -- Exorcism (30yd) - Lvl 18
-    };
-    PRIEST = { 589 }; -- Shadow Word: Pain (40yd) - Lvl 4
-    -- ROGUE = {};
-    SHAMAN = { 403 }; -- Lightning Bolt (30yd) - Starter
-    WARLOCK = { 686 }; -- Shadow Bolt (40yd) - Starter
-    WARRIOR = { 355 }; -- Taunt (30yd) - Lvl 12
-} )[ Class ];
-
-oUF:AddElement( 'SpellRange', Update, Enable, Disable );
+oUF:AddElement('SpellRange', Update, Enable, Disable)

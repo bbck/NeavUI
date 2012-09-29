@@ -24,41 +24,41 @@ MiniMapMailFrame.Text:SetText('N')
 
    -- Modify the lfg frame
 
-MiniMapLFGFrame:ClearAllPoints()
-MiniMapLFGFrame:SetPoint('TOPLEFT', Minimap, 4, -4)
-MiniMapLFGFrame:SetSize(14, 14)
-MiniMapLFGFrame:SetHighlightTexture(nil)
+QueueStatusMinimapButton:ClearAllPoints()
+QueueStatusMinimapButton:SetPoint('TOPLEFT', Minimap, 4, -4)
+QueueStatusMinimapButton:SetSize(14, 14)
+QueueStatusMinimapButton:SetHighlightTexture(nil)
 
-MiniMapLFGFrameBorder:SetTexture()
-MiniMapLFGFrame.eye:Hide()
+QueueStatusMinimapButtonBorder:SetTexture()
+QueueStatusMinimapButton.Eye:Hide()
 
 hooksecurefunc('EyeTemplate_StartAnimating', function(self)
     self:SetScript('OnUpdate', nil)
 end)
 
-MiniMapLFGFrame.Text = MiniMapLFGFrame:CreateFontString(nil, 'OVERLAY')
-MiniMapLFGFrame.Text:SetFont('Fonts\\ARIALN.ttf', 15, 'OUTLINE')
-MiniMapLFGFrame.Text:SetPoint('TOP', MiniMapLFGFrame)
-MiniMapLFGFrame.Text:SetTextColor(1, 0.4, 0)
-MiniMapLFGFrame.Text:SetText('L')
+QueueStatusMinimapButton.Text = QueueStatusMinimapButton:CreateFontString(nil, 'OVERLAY')
+QueueStatusMinimapButton.Text:SetFont('Fonts\\ARIALN.ttf', 15, 'OUTLINE')
+QueueStatusMinimapButton.Text:SetPoint('TOP', QueueStatusMinimapButton)
+QueueStatusMinimapButton.Text:SetTextColor(1, 0.4, 0)
+QueueStatusMinimapButton.Text:SetText('Q')
 
    -- Modify the battlefield frame
 
-MiniMapBattlefieldFrame:ClearAllPoints()
-MiniMapBattlefieldFrame:SetPoint('BOTTOMLEFT', Minimap, 5, 5)
-MiniMapBattlefieldFrame:SetSize(14, 14)
-
-hooksecurefunc(MiniMapBattlefieldFrame, 'Show', function()
-    MiniMapBattlefieldIcon:SetTexture(nil)
-    MiniMapBattlefieldBorder:SetTexture(nil)
-    BattlegroundShine:SetTexture(nil)
-end)
-
-MiniMapBattlefieldFrame.Text = MiniMapBattlefieldFrame:CreateFontString(nil, 'OVERLAY')
-MiniMapBattlefieldFrame.Text:SetFont('Fonts\\ARIALN.ttf', 15, 'OUTLINE')
-MiniMapBattlefieldFrame.Text:SetPoint('BOTTOMLEFT', MiniMapBattlefieldFrame)
-MiniMapBattlefieldFrame.Text:SetTextColor(0, 0.75, 1)
-MiniMapBattlefieldFrame.Text:SetText('P')
+--MiniMapBattlefieldFrame:ClearAllPoints()
+--MiniMapBattlefieldFrame:SetPoint('BOTTOMLEFT', Minimap, 5, 5)
+--MiniMapBattlefieldFrame:SetSize(14, 14)
+--
+--hooksecurefunc(MiniMapBattlefieldFrame, 'Show', function()
+--    MiniMapBattlefieldIcon:SetTexture(nil)
+--    MiniMapBattlefieldBorder:SetTexture(nil)
+--    BattlegroundShine:SetTexture(nil)
+--end)
+--
+--MiniMapBattlefieldFrame.Text = MiniMapBattlefieldFrame:CreateFontString(nil, 'OVERLAY')
+--MiniMapBattlefieldFrame.Text:SetFont('Fonts\\ARIALN.ttf', 15, 'OUTLINE')
+--MiniMapBattlefieldFrame.Text:SetPoint('BOTTOMLEFT', MiniMapBattlefieldFrame)
+--MiniMapBattlefieldFrame.Text:SetTextColor(0, 0.75, 1)
+--MiniMapBattlefieldFrame.Text:SetText('P')
 
     -- Hide all unwanted things
 
@@ -108,7 +108,6 @@ function GetMinimapShape()
 end
 
 Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
-
 Minimap:CreateBeautyBorder(11)
 Minimap:SetBeautyBorderPadding(1)
 
@@ -136,8 +135,7 @@ end)
     -- Skin the ticket status frame
 
 TicketStatusFrame:ClearAllPoints()
-TicketStatusFrame:SetPoint('BOTTOMRIGHT', UIParent, 0, 0)
-
+TicketStatusFrame:SetPoint('BOTTOMRIGHT', UIParent, -25, -33)
 TicketStatusFrameButton:HookScript('OnShow', function(self)
     self:SetBackdrop({
         bgFile = 'Interface\\Buttons\\WHITE8x8', 
@@ -154,7 +152,6 @@ end)
 
 local function GetZoneColor()
     local zoneType = GetZonePVPInfo()
-    
     if (zoneType == 'sanctuary') then
         return 0.4, 0.8, 0.94
     elseif (zoneType == 'arena') then
@@ -193,16 +190,16 @@ if (cfg.mouseover.zoneText) then
         if (not IsShiftKeyDown()) then
             SubZone:SetTextColor(GetZoneColor())
             SubZone:SetText(GetSubZoneText())
-            securecall('UIFrameFadeIn', SubZone, 0.235, SubZone:GetAlpha(), 1)
+            securecall('UIFrameFadeIn', SubZone, 0.15, SubZone:GetAlpha(), 1)
 
             MainZone:SetTextColor(GetZoneColor())
             MainZone:SetText(GetRealZoneText())
-            securecall('UIFrameFadeIn', MainZone, 0.235, MainZone:GetAlpha(), 1)
+            securecall('UIFrameFadeIn', MainZone, 0.15, MainZone:GetAlpha(), 1)
         end
     end)
 
     Minimap:HookScript('OnLeave', function()
-        securecall('UIFrameFadeOut', SubZone, 0.235, SubZone:GetAlpha(), 0)
-        securecall('UIFrameFadeOut', MainZone, 0.235, MainZone:GetAlpha(), 0)
+        securecall('UIFrameFadeOut', SubZone, 0.15, SubZone:GetAlpha(), 0)
+        securecall('UIFrameFadeOut', MainZone, 0.15, MainZone:GetAlpha(), 0)
     end)
 end

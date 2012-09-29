@@ -19,8 +19,8 @@ local function IsSpecificButton(self, name)
 end
 
 local function UpdateVehicleButton()
-    for i = 1, VEHICLE_MAX_ACTIONBUTTONS do
-        local hotkey = _G['VehicleMenuBarActionButton'..i..'HotKey']
+    for i = 1, NUM_OVERRIDE_BUTTONS do
+        local hotkey = _G['OverrideActionBarButton'..i..'HotKey']
         if (cfg.button.showVehicleKeybinds) then
             hotkey:SetFont(cfg.button.hotkeyFont, cfg.button.hotkeyFontsize + 3, 'OUTLINE')
             hotkey:SetVertexColor(cfg.color.HotKeyText[1], cfg.color.HotKeyText[2], cfg.color.HotKeyText[3])
@@ -34,7 +34,7 @@ hooksecurefunc('PetActionBar_Update', function()
     for _, name in pairs({
         'PetActionButton',
         'PossessButton',    
-        'ShapeshiftButton', 
+        'StanceButton', 
     }) do
         for i = 1, 12 do
             local button = _G[name..i]
@@ -44,8 +44,8 @@ hooksecurefunc('PetActionBar_Update', function()
                 if (not InCombatLockdown()) then
                     local cooldown = _G[name..i..'Cooldown']
                     cooldown:ClearAllPoints()
-                    cooldown:SetPoint('TOPRIGHT', button, -2.33, -2.33)
-                    cooldown:SetPoint('BOTTOMLEFT', button, 1.66, 2.33)
+                    cooldown:SetPoint('TOPRIGHT', button, -2, -2)
+                    cooldown:SetPoint('BOTTOMLEFT', button, 1, 1)
                     -- cooldown:SetDrawEdge(true)
                 end
 
@@ -78,8 +78,8 @@ hooksecurefunc('PetActionBar_Update', function()
                     local buttonBg = _G[name..i..'FloatingBG']
                     if (buttonBg) then
                         buttonBg:ClearAllPoints()
-                        buttonBg:SetPoint('TOPRIGHT', button, 4.5, 4.5)
-                        buttonBg:SetPoint('BOTTOMLEFT', button, -4.5, -4.5)
+                        buttonBg:SetPoint('TOPRIGHT', button, 5, 5)
+                        buttonBg:SetPoint('BOTTOMLEFT', button, -5, -5)
                         buttonBg:SetTexture(path..'textureShadow')
                         buttonBg:SetVertexColor(0, 0, 0, 1)
                         button.Shadow = true
@@ -96,6 +96,8 @@ hooksecurefunc('PetActionBar_Update', function()
         end
     end
 end)
+-- Force an update for StanceButton for those who doesn't have pet bar
+securecall('PetActionBar_Update')
 
 hooksecurefunc('ActionButton_Update', function(self)
     if (IsSpecificButton(self, 'MultiCast')) then
@@ -253,7 +255,7 @@ end)
 hooksecurefunc('ActionButton_UpdateHotkeys', function(self)
     local hotkey = _G[self:GetName()..'HotKey']
 
-    if (not IsSpecificButton(self, 'VehicleMenuBarActionButton')) then
+    if (not IsSpecificButton(self, 'OverrideActionBarButton')) then
         if (cfg.button.showKeybinds) then
             hotkey:ClearAllPoints()
             hotkey:SetPoint('TOPRIGHT', self, 0, -3)
