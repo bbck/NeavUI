@@ -5,9 +5,13 @@ nChat.Config = {
     disableFade = false,
     chatOutline = false,
 
+    enableChatWindowBorder = false,
+
     enableBottomButton = false, 
     enableHyperlinkTooltip = false, 
     enableBorderColoring = true,
+
+    showInputBoxAbove = true,  -- Show the chat input box above the chat window
 
     tab = {
         fontSize = 15,

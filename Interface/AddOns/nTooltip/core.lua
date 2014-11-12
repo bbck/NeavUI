@@ -20,33 +20,6 @@ local tankIcon = '|TInterface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES.blp:13:13:0:0
 local healIcon = '|TInterface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES.blp:13:13:0:0:64:64:20:39:1:20|t'
 local damagerIcon = '|TInterface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES.blp:13:13:0:0:64:64:20:39:22:41|t'
 
-local symbiosis = {
-    gain = {
-        ['DEATHKNIGHT'] = { ['DK_BLOOD']            = 113072, ['DK_FROST']          = 113516, ['DK_UNHOLY']         = 113516, },
-        ['HUNTER']      = { ['HUNTER_BM']           = 113073, ['HUNTER_MM']         = 113073, ['HUNTER_SV']         = 113073, },
-        ['MAGE']        = { ['MAGE_ARCANE']         = 113074, ['MAGE_FIRE']         = 113074, ['MAGE_FROST']        = 113074, },
-        ['MONK']        = { ['MONK_BREW']           = 113306, ['MONK_MIST']         = 127361, ['MONK_WIND']         = 113275, },
-        ['PALADIN']     = { ['PALADIN_HOLY']        = 113269, ['PALADIN_PROT']      = 122287, ['PALADIN_RET']       = 113075, },
-        ['PRIEST']      = { ['PRIEST_DISC']         = 113506, ['PRIEST_HOLY']       = 113506, ['PRIEST_SHADOW']     = 113277, },
-        ['ROGUE']       = { ['ROGUE_ASS']           = 113613, ['ROGUE_COMBAT']      = 113613, ['ROGUE_SUB']         = 113613, },
-        ['SHAMAN']      = { ['SHAMAN_ELE']          = 113286, ['SHAMAN_ENHANCE']    = 113286, ['SHAMAN_RESTO']      = 113289, },
-        ['WARLOCK']     = { ['WARLOCK_AFFLICTION']  = 113295, ['WARLOCK_DEMO']      = 113295, ['WARLOCK_DESTRO']    = 113295, },
-        ['WARRIOR']     = { ['WARRIOR_ARMS']        = 122294, ['WARRIOR_FURY']      = 122294, ['WARRIOR_PROT']      = 122286, },
-    },
-    grant = {
-        ['DEATHKNIGHT'] =   { ['DRUID_BALANCE'] = 110570, ['DRUID_FERAL'] = 122282, ['DRUID_GUARDIAN'] = 122285, ['DRUID_RESTO'] = 110575, },
-        ['HUNTER'] =        { ['DRUID_BALANCE'] = 110588, ['DRUID_FERAL'] = 110597, ['DRUID_GUARDIAN'] = 110600, ['DRUID_RESTO'] = 19263, },
-        ['MAGE'] =          { ['DRUID_BALANCE'] = 110621, ['DRUID_FERAL'] = 110693, ['DRUID_GUARDIAN'] = 110694, ['DRUID_RESTO'] = 110696, },
-        ['MONK'] =          { ['DRUID_BALANCE'] = 126458, ['DRUID_FERAL'] = 128844, ['DRUID_GUARDIAN'] = 126453, ['DRUID_RESTO'] = 126456, },
-        ['PALADIN'] =       { ['DRUID_BALANCE'] = 110698, ['DRUID_FERAL'] = 110700, ['DRUID_GUARDIAN'] = 110701, ['DRUID_RESTO'] = 122288, },
-        ['PRIEST'] =        { ['DRUID_BALANCE'] = 110707, ['DRUID_FERAL'] = 110715, ['DRUID_GUARDIAN'] = 110717, ['DRUID_RESTO'] = 110718, },
-        ['ROGUE'] =         { ['DRUID_BALANCE'] = 110788, ['DRUID_FERAL'] = 110730, ['DRUID_GUARDIAN'] = 122289, ['DRUID_RESTO'] = 110791, },
-        ['SHAMAN'] =        { ['DRUID_BALANCE'] = 110802, ['DRUID_FERAL'] = 110807, ['DRUID_GUARDIAN'] = 110803, ['DRUID_RESTO'] = 110806, },
-        ['WARLOCK'] =       { ['DRUID_BALANCE'] = 122291, ['DRUID_FERAL'] = 110810, ['DRUID_GUARDIAN'] = 122290, ['DRUID_RESTO'] = 112970, },
-        ['WARRIOR'] =       { ['DRUID_BALANCE'] = 122292, ['DRUID_FERAL'] = 112997, ['DRUID_GUARDIAN'] = 113002, ['DRUID_RESTO'] = 113004, },
-    }
-}
-
 -- _G.TOOLTIP_DEFAULT_BACKGROUND_COLOR = {r = 0, g = 0, b = 0}
 
     -- Some tooltip changes
@@ -103,6 +76,14 @@ local function ApplyTooltipStyle(self)
     })
 
     self:HookScript('OnShow', function(self)
+        self:SetBackdropColor(0, 0, 0, 0.7)
+    end)
+
+    self:HookScript('OnHide', function(self)
+        self:SetBackdropColor(0, 0, 0, 0.7)
+    end)
+
+    self:HookScript('OnUpdate', function(self)
         self:SetBackdropColor(0, 0, 0, 0.7)
     end)
 
@@ -198,7 +179,7 @@ local function GetItemLevel(unit)
     end
 
     if (item > 0) then
-        return floor(total / item)
+        return floor(total / item + 0.5)
     end
 
     return 0
@@ -260,9 +241,12 @@ local function GetFormattedUnitClass(unit)
     end
 end
 
-local function GetFormattedUnitString(unit)
+local function GetFormattedUnitString(unit, specIcon)
     if (UnitIsPlayer(unit)) then
-        return GetFormattedUnitLevel(unit)..UnitRace(unit)..GetFormattedUnitClass(unit)
+        if (not UnitRace(unit)) then
+            return nil
+        end
+        return GetFormattedUnitLevel(unit)..UnitRace(unit)..GetFormattedUnitClass(unit)..(cfg.showSpecializationIcon and specIcon or '')
     else
         return GetFormattedUnitLevel(unit)..GetFormattedUnitClassification(unit)..GetFormattedUnitType(unit)
     end
@@ -355,10 +339,42 @@ local function AddMouseoverTarget(self, unit)
     end
 end
 
+GameTooltip.inspectCache = {}
+
 GameTooltip:HookScript('OnTooltipSetUnit', function(self, ...)
     local unit = GetRealUnit(self)
 
+    if (cfg.hideInCombat and InCombatLockdown()) then
+        self:Hide()
+        return
+    end
+
     if (UnitExists(unit) and UnitName(unit) ~= UNKNOWN) then
+        local ilvl = 0
+        local specIcon = ''
+        local lastUpdate = 30
+        for index, _ in pairs(self.inspectCache) do
+            local inspectCache = self.inspectCache[index]
+            if (inspectCache.GUID == UnitGUID(unit)) then
+                ilvl = inspectCache.itemLevel or 0
+                specIcon = inspectCache.specIcon or ''
+                lastUpdate = inspectCache.lastUpdate and math.abs(inspectCache.lastUpdate - math.floor(GetTime())) or 30
+            end
+        end
+
+            -- Fetch inspect information (ilvl and spec)
+
+        if (unit and CanInspect(unit)) then
+            if (not self.inspectRefresh and lastUpdate >= 30 and not self.blockInspectRequests) then
+                if (not self.blockInspectRequests) then
+                    self.inspectRequestSent = true
+                    NotifyInspect(unit)
+                end
+            end
+        end
+
+        self.inspectRefresh = false
+
         local name, realm = UnitName(unit)
 
             -- Hide player titles
@@ -383,7 +399,7 @@ GameTooltip:HookScript('OnTooltipSetUnit', function(self, ...)
 
         for i = 2, GameTooltip:NumLines() do
             if (_G['GameTooltipTextLeft'..i]:GetText():find('^'..TOOLTIP_UNIT_LEVEL:gsub('%%s', '.+'))) then
-                _G['GameTooltipTextLeft'..i]:SetText(GetFormattedUnitString(unit))
+                _G['GameTooltipTextLeft'..i]:SetText(GetFormattedUnitString(unit, specIcon))
             end
         end
 
@@ -468,40 +484,8 @@ GameTooltip:HookScript('OnTooltipSetUnit', function(self, ...)
 
             -- Show player item lvl
 
-        if (unit and CanInspect(unit)) then
-            if (not ((InspectFrame and InspectFrame:IsShown()) or (Examiner and Examiner:IsShown()))) then
-                NotifyInspect(unit)
-            end
-        end
-
-            -- Symbiosis
-
-        if (UnitIsPlayer(unit) and not UnitIsEnemy(unit, 'player')) then
-            local already = false
-            for i = 1, 40 do
-                if select(11, UnitAura(unit, i, 'HELPFUL')) == 110309 then
-                    already = true
-                    break
-                end
-            end
-
-            local class = select(2, UnitClass('player'))
-            local uclass = select(2, UnitClass(unit))
-            local spec = SPEC_CORE_ABILITY_TEXT[select(1, GetSpecializationInfo(GetSpecialization() or 1))]
-            local spellID = (class == 'DRUID' and uclass ~= 'DRUID') and symbiosis.grant[uclass][spec] or (class ~= 'DRUID' and uclass == 'DRUID') and symbiosis.grant[class][spec]
-            local name, _, icon = GetSpellInfo(spellID)
-
-            if already then
-                GameTooltip:AddLine(' ')
-                GameTooltip:AddLine('|cff3eea23'..select(1, GetSpellInfo(110309))..' already buffed|r')
-            end
-
-            if icon then
-                GameTooltip:AddLine(' ')
-                GameTooltip:AddDoubleLine('|T'..icon..':16:16:0:0:64:64:4:60:4:60|t '..name, '|cff3eea23'..select(1, GetSpellInfo(110309))..'|r')
-                self:Show()
-                if self.aura then self.aura:SetSize(self:GetWidth(), 0) end
-            end
+        if (cfg.showItemLevel and ilvl > 1) then
+            GameTooltip:AddLine(STAT_AVERAGE_ITEM_LEVEL .. ': ' .. '|cffFFFFFF'..ilvl..'|r')
         end
     end
 end)
@@ -517,6 +501,35 @@ GameTooltip:HookScript('OnTooltipCleared', function(self)
         self:SetBeautyBorderColor(1, 1, 1)
     end
 end)
+
+
+    -- Hide coalesced/interactive realm information
+
+if (cfg.hideRealmText) then
+    local COALESCED_REALM_TOOLTIP1 = string.split(FOREIGN_SERVER_LABEL, COALESCED_REALM_TOOLTIP)
+    local INTERACTIVE_REALM_TOOLTIP1 = string.split(INTERACTIVE_SERVER_LABEL, INTERACTIVE_REALM_TOOLTIP)
+    -- Dirty checking of the coalesced realm text because it's added
+    -- after the initial OnShow
+    GameTooltip:HookScript('OnUpdate', function(self)
+        for i = 3, self:NumLines() do
+            local row = _G['GameTooltipTextLeft'..i]
+            local rowText = row:GetText()
+
+            if (rowText) then
+                if (rowText:find(COALESCED_REALM_TOOLTIP1) or rowText:find(INTERACTIVE_REALM_TOOLTIP1)) then
+                    row:SetText(nil)
+                    row:Hide()
+
+                    local previousRow = _G['GameTooltipTextLeft'..(i - 1)]
+                    previousRow:SetText(nil)
+                    previousRow:Hide()
+
+                    self:Show()
+                end
+            end
+        end
+    end)
+end
 
 hooksecurefunc('GameTooltip_SetDefaultAnchor', function(self, parent)
     if (cfg.showOnMouseover) then
@@ -540,38 +553,67 @@ GameTooltip:SetScript('OnEvent', function(self, event, GUID)
         return
     end
 
-    if (event == 'INSPECT_READY' and UnitGUID(unit) == GUID) then
-        local id = GetInspectSpecialization(unit)
-        local _, spec, _, icon, _, _, class = GetSpecializationInfoByID(id)
+    if (self.blockInspectRequests) then
+        self.inspectRequestSent = false
+    end
 
-            -- Show spec icon
-
-        if (spec) then
-            local race = UnitRace(unit)
-
-            for i = 1, select('#', self:GetRegions()) do
-                local obj = select(i, self:GetRegions())
-
-                if (obj and obj:GetObjectType() == 'FontString') then
-                    if (obj:GetText() and obj:GetText():find(race)) then
-                        obj:SetText(obj:GetText()..' |T'..icon..':0|t')
-                    end
-                end
-            end
+    if (UnitGUID(unit) ~= GUID or not self.inspectRequestSent) then
+        if (not self.blockInspectRequests) then
+            ClearInspectPlayer()
         end
+        return
+    end
 
-            -- Show player item lvl
+    local _, _, _, icon = GetSpecializationInfoByID(GetInspectSpecialization(unit))
+    local ilvl = GetItemLevel(unit)
+    local now = GetTime()
 
-        if (cfg.showItemLevel) then
-            local ilvl = GetItemLevel(unit)
-
-            if (ilvl > 1) then
-                GameTooltip:AddLine(STAT_AVERAGE_ITEM_LEVEL .. ': ' .. '|cffFFFFFF'..ilvl..'|r')
-            end
+    local matchFound
+    for index, _ in pairs(self.inspectCache) do
+        local inspectCache = self.inspectCache[index]
+        if (inspectCache.GUID == GUID) then
+            inspectCache.itemLevel = ilvl
+            inspectCache.specIcon = icon and ' |T'..icon..':0|t' or ''
+            inspectCache.lastUpdate = math.floor(now)
+            matchFound = true
         end
+    end
 
-        self:Show()
+    if not matchFound then
+        local GUIDInfo = {
+            ['GUID'] = GUID,
+            ['itemLevel'] = ilvl,
+            ['specIcon'] = icon and ' |T'..icon..':0|t' or '',
+            ['lastUpdate'] = math.floor(now)
+        }
+        table.insert(self.inspectCache, GUIDInfo)
+    end
 
-        ClearInspectPlayer(unit)
+    if (#self.inspectCache > 30) then
+        table.remove(self.inspectCache, 1)
+    end
+
+    self.inspectRefresh = true
+    GameTooltip:SetUnit('mouseover')
+
+    if (not self.blockInspectRequests) then
+        ClearInspectPlayer()
+    end
+    self.inspectRequestSent = false
+end)
+
+local f = CreateFrame('Frame')
+f:RegisterEvent('ADDON_LOADED')
+f:SetScript('OnEvent', function(self, event)
+    if IsAddOnLoaded('Blizzard_InspectUI') then
+        hooksecurefunc('InspectFrame_Show', function(unit)
+            GameTooltip.blockInspectRequests = true
+        end)
+
+        InspectFrame:HookScript('OnHide', function()
+            GameTooltip.blockInspectRequests = false
+        end)
+
+        self:UnregisterEvent('ADDON_LOADED')
     end
 end)

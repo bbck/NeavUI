@@ -155,6 +155,23 @@ local function CreateFocusButton(self)
     end)
 end
 
+local function UpdateThreat(self)
+    local _, status, scaledPercent, _, _ = UnitDetailedThreatSituation('player', 'target')
+
+    if (scaledPercent) then
+        local red, green, blue = GetThreatStatusColor(status)
+        self.NumericalThreat.bg:SetStatusBarColor(red, green, blue)
+        self.NumericalThreat.value:SetText(math.ceil(scaledPercent)..'%')
+        if (not self.NumericalThreat:IsVisible()) then
+            self.NumericalThreat:Show()
+        end
+    else
+        if (self.NumericalThreat:IsVisible()) then
+            self.NumericalThreat:Hide()
+        end
+    end
+end
+
 local function PlayerToVehicleTexture(self, event, unit)
     self.Texture:SetSize(240, 121)
     self.Texture:SetPoint('CENTER', self, 0, -8)
@@ -527,10 +544,23 @@ local function CreateUnitLayout(self, unit)
     otherBar:SetPoint('BOTTOMLEFT', myBar:GetStatusBarTexture(), 'BOTTOMRIGHT')
     otherBar:SetWidth(self.Health:GetWidth())
 
+    local absorbBar = CreateFrame('StatusBar', nil, self)
+    absorbBar:SetStatusBarTexture(config.media.statusbar, 'OVERLAY')
+    absorbBar:SetStatusBarColor(1, 1, 0, 0.35)
+
+    absorbBar.Smooth = true
+
+    absorbBar:SetOrientation('HORIZONTAL')
+    absorbBar:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT')
+    absorbBar:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
+    absorbBar:SetWidth(self.Health:GetWidth())
+
     self.HealPrediction = {
         myBar = myBar,
         otherBar = otherBar,
+        absorbBar = absorbBar,
         maxOverflow = 1.0,
+        frequentUpdates = true
     }
 
         -- Health text
@@ -834,6 +864,7 @@ local function CreateUnitLayout(self, unit)
             WarlockPowerFrame:SetParent(oUF_Neav_Player)
             WarlockPowerFrame:SetScale(config.units.player.scale * 0.8)
             WarlockPowerFrame_OnLoad(WarlockPowerFrame)
+            WarlockPowerFrame:SetFrameLevel(1)
 
             ShardBarFrame:SetScale(config.units.player.scale * 0.8)
             ShardBarFrame:ClearAllPoints()
@@ -846,27 +877,6 @@ local function CreateUnitLayout(self, unit)
             DemonicFuryBarFrame:SetScale(config.units.player.scale * 0.8)
             DemonicFuryBarFrame:ClearAllPoints()
             DemonicFuryBarFrame:SetPoint('TOP', oUF_Neav_Player, 'BOTTOM', 35, 12)
-
-                -- Demonic Gateway timer
-
-            TotemFrame:ClearAllPoints()
-            TotemFrame:SetPoint('TOPLEFT', oUF_Neav_Player, 'TOPLEFT', 0, -70)
-            TotemFrame:SetParent(oUF_Neav_Player)
-            TotemFrame:SetScale(config.units.player.scale * 0.65)
-            TotemFrame:Show()
-
-            for i = 1, MAX_TOTEMS do
-                _G['TotemFrameTotem'..i]:SetFrameStrata('LOW')
-
-                _G['TotemFrameTotem'..i..'IconCooldown']:SetAlpha(0)
-
-                _G['TotemFrameTotem'..i..'Duration']:SetParent(self)
-                _G['TotemFrameTotem'..i..'Duration']:SetDrawLayer('OVERLAY')
-                _G['TotemFrameTotem'..i..'Duration']:ClearAllPoints()
-                _G['TotemFrameTotem'..i..'Duration']:SetPoint('BOTTOM', _G['TotemFrameTotem'..i], 0, 3)
-                _G['TotemFrameTotem'..i..'Duration']:SetFont(config.font.normal, 10, 'OUTLINE')
-                _G['TotemFrameTotem'..i..'Duration']:SetShadowOffset(0, 0)
-            end
         end
 
             -- Priest bar
@@ -1316,6 +1326,34 @@ local function CreateUnitLayout(self, unit)
             self.Auras.PostUpdateGapIcon = function(self, unit, icon, visibleBuffs)
                 icon:Hide()
             end
+        end
+
+        if (config.units.target.showThreatValue) then
+            self.NumericalThreat = CreateFrame('Frame', nil, self)
+            self.NumericalThreat:SetSize(49, 18)
+            self.NumericalThreat:SetPoint('BOTTOM', self, 'TOP', 0, 0)
+            self.NumericalThreat:Hide()
+
+            self.NumericalThreat.value = self.NumericalThreat:CreateFontString(nil, 'OVERLAY', 'GameFontHighlight')
+            self.NumericalThreat.value:SetPoint('TOP', 0, -4)
+
+            self.NumericalThreat.bg = CreateFrame('StatusBar', nil, self.NumericalThreat)
+            self.NumericalThreat.bg:SetStatusBarTexture(config.media.statusbar)
+            self.NumericalThreat.bg:SetFrameStrata('LOW')
+            self.NumericalThreat.bg:SetPoint('TOP', 0, -3)
+            self.NumericalThreat.bg:SetSize(37, 14)
+
+            self.NumericalThreat.texture = self.NumericalThreat:CreateTexture(nil, 'ARTWORK')
+            self.NumericalThreat.texture:SetPoint('TOP', 0, 0)
+            self.NumericalThreat.texture:SetTexture('Interface\\TargetingFrame\\NumericThreatBorder')
+            self.NumericalThreat.texture:SetTexCoord(0, 0.765625, 0, 0.5625)
+            self.NumericalThreat.texture:SetSize(49, 18)
+
+            self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', UpdateThreat)
+            self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', UpdateThreat)
+            self:RegisterEvent('PLAYER_REGEN_DISABLED', UpdateThreat)
+            self:RegisterEvent('PLAYER_REGEN_ENABLED', UpdateThreat)
+            self:RegisterEvent('PLAYER_TARGET_CHANGED', UpdateThreat)
         end
     end
 

@@ -17,7 +17,18 @@ local function EnableMouseOver(self, bar, min, max, alpha, hiddenAlpha)
         f:SetPoint('TOPLEFT', self..min, -5, 5)
         f:SetPoint('BOTTOMRIGHT', self..max, 5, 5)
 
-        bar:SetAlpha(minAlpha)
+        hooksecurefunc(bar, 'SetAlpha', function(self, alpha)
+            if (button.cooldown) then
+                button.cooldown:SetSwipeColor(0, 0, 0, alpha)
+                button.cooldown:SetDrawSwipe(alpha > 0)
+                button.cooldown:SetDrawEdge(alpha > 0)
+                button.cooldown:SetDrawBling(alpha > 0)
+            end
+        end)
+
+        f:SetScript('OnShow', function()
+            bar:SetAlpha(minAlpha)
+        end)
 
         f:SetScript('OnEnter', function()
             bar:SetAlpha(alpha)
@@ -34,10 +45,12 @@ local function EnableMouseOver(self, bar, min, max, alpha, hiddenAlpha)
         end)
 
         button:HookScript('OnLeave', function() 
-            if (not MouseIsOver(bar)) then
+            if (not MouseIsOver(f)) then
                 bar:SetAlpha(minAlpha)
             end
         end)
+
+        bar:SetAlpha(minAlpha)
     end
 end
 

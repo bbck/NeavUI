@@ -1,5 +1,7 @@
 
-nPower = {
+local _, nPower = ...
+
+nPower.Config = {
     position = {'CENTER', UIParent, 0, -100},
     sizeWidth = 200,
 

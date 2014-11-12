@@ -24,15 +24,8 @@ local whiteOverlay = 'Interface\\AddOns\\nPlates\\media\\textureIconOverlay'
 
 local f = CreateFrame('Frame', nil, UIParent)
 
-f:RegisterEvent('PLAYER_TARGET_CHANGED')
-
---f:RegisterEvent('UNIT_TARGET')
-f:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE')
-f:RegisterEvent('UNIT_THREAT_LIST_UPDATE')
-f:RegisterEvent('PLAYER_REGEN_ENABLED')
-f:RegisterEvent('PLAYER_REGEN_DISABLED')
-f:RegisterEvent('PLAYER_CONTROL_LOST')
-f:RegisterEvent('PLAYER_CONTROL_GAINED')
+f.elapsed = 0
+f.elapsedLong = 0
 
     -- Totem data and functions
 
@@ -50,7 +43,6 @@ local totemData = {
     -- Air
     [TotemName(8177)] = {TotemIcon(8177)}, -- Grounding Totem
     [TotemName(108269)] = {TotemIcon(108269)}, -- Capacitor Totem
-    [TotemName(120668)] = {TotemIcon(120668)}, -- Stormlash Totem
     [TotemName(98009)] = {TotemIcon(98008)}, -- Spirit Link Totem
 
     -- Earth
@@ -64,7 +56,6 @@ local totemData = {
     [TotemName(3599)] = {TotemIcon(3599)}, -- Searing Totem
 
     -- Water
-    [TotemName(16190)] = {TotemIcon(16190)}, -- Mana Tide Totem
     [TotemName(5394)] = {TotemIcon(5394)}, -- Healing Stream Totem
 }
 
@@ -259,7 +250,7 @@ local function UpdateNameL(self)
 
     self.NewName:SetTextColor(1, 1, 1)
     if (cfg.showLevel) then
-        local levelText = self.Level:GetText()
+        local levelText = self.Level:GetText() or ''
         local levelColor = RGBHex(self.Level:GetTextColor())
         local eliteTexture = self.EliteIcon:IsVisible()
 
@@ -315,10 +306,11 @@ local function UpdatePlate(self)
     self.Castbar.IconOverlay:SetVertexColor(r, g, b)
 end
 
-local function SkinPlate(self)
+local function SkinPlate(self, nameFrame)
     self.Health, self.Castbar = self:GetChildren()
-    _, self.Castbar.Overlay, self.Castbar.Shield, self.Castbar.Icon = self.Castbar:GetRegions()
-    self.Glow, self.Overlay, self.Highlight, self.Name, self.Level, self.BossIcon, self.RaidIcon, self.EliteIcon = self:GetRegions()
+    self.Castbar.Overlay, self.Castbar.Shield, self.Castbar.Icon = select(2, self.Castbar:GetRegions())
+    self.Glow, self.Overlay, self.Highlight, self.Level, self.BossIcon, self.RaidIcon, self.EliteIcon = self:GetRegions()
+    self.Name = nameFrame:GetRegions()
 
         -- Hide some nameplate objects
 
@@ -458,22 +450,13 @@ local function SkinPlate(self)
         self.Highlight:Hide()
     end)
 
-    f:HookScript('OnEvent', function(_, event)
-        if (not self:IsVisible()) then
-            return
-        end
-
-        if (CanHaveThreat(self.Health:GetStatusBarColor())) then
-            if (event == 'UNIT_THREAT_LIST_UPDATE' or event == 'UNIT_THREAT_SITUATION_UPDATE' or event == 'PLAYER_REGEN_ENABLED' or event == 'PLAYER_REGEN_DISABLED') then
+    self:SetScript('OnUpdate', function(_, elapsed)
+        f.elapsed = f.elapsed + elapsed
+        if (f.elapsed >= 0.1) then
+            if ((CanHaveThreat(self.Health:GetStatusBarColor()) and InCombatLockdown()) or self.NewGlow:IsShown()) then
                 UpdateThreatColor(self)
             end
-        else
-            if (self.NewGlow:IsVisible()) then
-                self.NewGlow:Hide()
-            end
-        end
 
-        if (event == 'PLAYER_TARGET_CHANGED') then
             if (cfg.showTargetBorder) then
                 if (IsTarget(self)) then
                     if (not self.TargetHighlight) then
@@ -492,9 +475,16 @@ local function SkinPlate(self)
                     end
                 end
             end
+
+            f.elapsed = 0
         end
 
-        UpdateHealthColor(self)
+        f.elapsedLong = f.elapsedLong + elapsed
+        if (f.elapsedLong >= 0.49) then
+            UpdateHealthColor(self)
+
+            f.elapsedLong = 0
+        end
 
     end)
 end
@@ -518,7 +508,7 @@ f:SetScript('OnUpdate', function(self, elapsed)
                 local frameName = frame:GetName()
 
                 if (frameName and frameName:find('NamePlate') and not frame.NewName) then
-                    SkinPlate(frame)
+                    SkinPlate(frame:GetChildren())
                     index = i
                 end
             end
@@ -527,41 +517,3 @@ f:SetScript('OnUpdate', function(self, elapsed)
         lastUpdate = 0
     end
 end)
-
---[[
-local index = nil
-
-local function OnUpdate(self, elapsed)
-    self.lastUpdate = self.lastUpdate and (self.lastUpdate + elapsed) or 0
-    if (self.lastUpdate > 0.25) then
-        while(_G['NamePlate' .. index]) do
-            local frame = _G['NamePlate' .. index]
-            frame:HookScript('OnShow', SkinPlate)
-            SkinPlate(frame)
-
-            index = index + 1
-        end
-        self.lastUpdate = 0
-    end
-end
-
-local function FindFirstNameplate(self, elapsed)
-    frames = select('#', WorldFrame:GetChildren())
-    if (frames ~= total) then
-        for i = 1, frames do
-            namePlate = select(i, WorldFrame:GetChildren())
-            if (IsNameplate(namePlate)) then
-                index = index and (index < namePlate:GetName():match('%d+')) and index or namePlate:GetName():match('%d+')
-            end
-
-            total = frames
-        end
-
-        if (index) then
-            f:SetScript('OnUpdate', OnUpdate)
-        end
-    end
-end
-
-f:SetScript('OnUpdate', FindFirstNameplate)
-]]--

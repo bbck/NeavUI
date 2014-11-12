@@ -1,13 +1,11 @@
 # Neav UI
 
-This is a Github mirror of Neav UI on WoWInterface.
+This is a development repository for Neav UI on WoWInterface.
 
 ## Addons included
 
 - !Beautycase
 - !Colorz
-- [ActionButtonText](http://www.wowinterface.com/downloads/info11009-ActionButtonText.html) (heavily modified)
-- OmniCC
 - [evl_RaidStatus](http://www.wowinterface.com/downloads/info15178-RaidStatus.html)
 - nBuff
 - nChat
@@ -17,7 +15,6 @@ This is a Github mirror of Neav UI on WoWInterface.
 - nPlates
 - nPower
 - nTooltip
-- [oGlow](http://www.wowinterface.com/downloads/info7142-oGlow.html)
 - [oUF](http://www.wowinterface.com/downloads/info9994-oUF.html)
 - oUF_Neav
 - oUF_NeavRaid

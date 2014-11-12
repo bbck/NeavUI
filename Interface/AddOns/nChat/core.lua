@@ -65,6 +65,9 @@ _G.CHAT_RAID_LEADER_GET = '(|Hchannel:raid|hL|h) %s:\32'
 _G.CHAT_BATTLEGROUND_GET = '(|Hchannel:Battleground|hBG|h) %s:\32'
 _G.CHAT_BATTLEGROUND_LEADER_GET = '(|Hchannel:Battleground|hBL|h) %s:\32'
 
+_G.CHAT_INSTANCE_CHAT_GET = '|Hchannel:INSTANCE_CHAT|h[I]|h %s:\32';
+_G.CHAT_INSTANCE_CHAT_LEADER_GET = '|Hchannel:INSTANCE_CHAT|h[IL]|h %s:\32';
+
 --[[
 local channelFormat
 do
@@ -336,9 +339,12 @@ local function ModChat(self)
     end
 
     _G[self..'EditBox']:SetAltArrowKeyMode(false)
-    _G[self..'EditBox']:ClearAllPoints()
-    _G[self..'EditBox']:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 2, 33)
-    _G[self..'EditBox']:SetPoint('BOTTOMRIGHT', self, 'TOPRIGHT', 0, 33)
+
+    if (cfg.showInputBoxAbove) then
+        _G[self..'EditBox']:ClearAllPoints()
+        _G[self..'EditBox']:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 2, 33)
+        _G[self..'EditBox']:SetPoint('BOTTOMRIGHT', self, 'TOPRIGHT', 0, 33)
+    end
     _G[self..'EditBox']:SetBackdrop({
         bgFile = 'Interface\\Buttons\\WHITE8x8',
         insets = {
@@ -501,3 +507,19 @@ local function FCF_Tab_OnClickHook(chatTab, ...)
     UIDropDownMenu_AddButton(chatLog)
 end
 FCF_Tab_OnClick = FCF_Tab_OnClickHook
+
+if (cfg.enableChatWindowBorder) then
+    for i = 1, NUM_CHAT_WINDOWS do
+        local cf = _G['ChatFrame'..i]
+        if (cf) then
+            cf:CreateBeautyBorder(12)
+            cf:SetBeautyBorderPadding(5, 5, 5, 5, 5, 8, 5, 8)
+        end
+    end
+
+    local ct = _G['ChatFrame2']
+    if (ct) then
+        ct:CreateBeautyBorder(12)
+        ct:SetBeautyBorderPadding(5, 29, 5, 29, 5, 8, 5, 8)
+    end
+end
